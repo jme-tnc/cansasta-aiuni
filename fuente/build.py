@@ -2,8 +2,8 @@
 import json, re, pathlib
 from playwright.sync_api import sync_playwright
 
-ROOT = pathlib.Path(__file__).parent
-OUT = ROOT / "pwa"
+ROOT = pathlib.Path(__file__).parent      # carpeta fuente/
+OUT = ROOT.parent                          # la app se genera en la raíz del repositorio
 (OUT / "icons").mkdir(parents=True, exist_ok=True)
 
 BASKET = """
