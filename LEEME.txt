@@ -1,0 +1,17 @@
+MI CANASTITA - App PWA de lista de compras con sincronización
+
+PUBLICAR EN GITHUB PAGES
+1. Sube todos estos archivos a la raíz del repositorio "mi-canastita".
+2. En el repositorio: Settings > Pages > "Deploy from a branch" > rama "main", carpeta "/ (root)" > Save.
+3. En 1 o 2 minutos la app queda en: https://TU-USUARIO.github.io/mi-canastita/
+
+INSTALAR EN EL CELULAR
+- Android (Chrome): toca "Instalar" o Menú ⋮ > "Agregar a pantalla principal".
+- iPhone (Safari): Compartir > "Agregar a pantalla de inicio".
+
+SINCRONIZAR DOS CELULARES
+1. En el primer celular toca "Solo en este celular" (arriba) > "Crear lista compartida".
+2. Toca "Enviar enlace al otro celular" (por WhatsApp, por ejemplo).
+3. En el otro celular abre ese enlace, o escribe el código de 16 caracteres en "Unirme a esa lista".
+Guarda tu código: si cambias de celular o se borran los datos, con el código recuperas tu lista.
+Sin internet la app sigue funcionando y los cambios se envían solos cuando vuelve la conexión.
