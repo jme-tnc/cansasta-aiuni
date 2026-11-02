@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Mi Canastita</title>
 <meta name="description" content="Lista de compras simple con íconos que cambian según el producto.">
-<meta name="theme-color" content="#FBD6E1" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#4A2E3E" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#FFF7FA" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1E151C" media="(prefers-color-scheme: dark)">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -117,18 +117,19 @@ svg{display:block}
 /* ---------- Barra superior ---------- */
 .bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:15;background:var(--glass-bar);
   -webkit-backdrop-filter:blur(16px) saturate(1.3);backdrop-filter:blur(16px) saturate(1.3);
-  border-bottom:1px solid var(--glass-line);padding-block:10px;
+  border-bottom:1px solid var(--glass-line);padding-block:20px 14px;
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-.bar-in{max-width:528px;margin:0 auto;display:flex;align-items:center;gap:10px}
-.logo{width:44px;height:44px;flex:none;border-radius:15px;background:var(--surface);box-shadow:var(--shadow-sm);padding:4px}
-.brand{flex:1;min-width:0}
-.brand h1{margin:0;font-family:var(--f-display);font-weight:600;font-size:1.32rem;line-height:1.05;letter-spacing:-.2px;white-space:nowrap}
-.brand p{margin:2px 0 0;color:var(--muted);font-weight:700;font-size:.8rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.chipbtn{flex:none;display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);color:var(--ink);
-  border-radius:999px;padding:7px 12px 7px 10px;font-weight:800;font-size:.8rem;box-shadow:var(--shadow-sm);transition:transform .15s}
-.chipbtn:active{transform:scale(.95)}
-.chipbtn svg{width:17px;height:17px;color:var(--accent-strong)}
-.sync i{width:8px;height:8px;border-radius:50%;background:var(--muted);flex:none}
+.bar-in{max-width:528px;margin:0 auto;display:grid;grid-template-columns:48px minmax(0,1fr) 48px;align-items:center;gap:8px}
+.brandbox{min-width:0;display:flex;align-items:center;justify-content:center;gap:10px}
+.logo{width:60px;height:60px;flex:none;filter:drop-shadow(0 6px 10px rgba(179,70,110,.18))}
+.brand{min-width:0}
+.brand h1{margin:0;font-family:var(--f-display);font-weight:600;font-size:clamp(1.25rem,5.6vw,1.5rem);line-height:1.05;letter-spacing:-.2px;white-space:nowrap}
+.brand p{margin:3px 0 0;color:var(--muted);font-weight:700;font-size:.84rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.iconbtn{position:relative;width:48px;height:48px;display:grid;place-items:center;border:1px solid var(--line);background:var(--surface);color:var(--accent-strong);
+  border-radius:16px;box-shadow:var(--shadow-sm);transition:transform .15s;padding:0}
+.iconbtn:active{transform:scale(.92)}
+.iconbtn svg{width:24px;height:24px}
+.sync i{position:absolute;top:9px;right:8px;width:11px;height:11px;border-radius:50%;background:var(--muted);border:2px solid var(--surface)}
 .sync[data-s="ok"] i{background:var(--ok)}
 .sync[data-s="busy"] i{background:var(--warn);animation:pulso 1s ease-in-out infinite}
 .sync[data-s="off"] i,.sync[data-s="err"] i{background:var(--warn)}
@@ -293,7 +294,12 @@ svg{display:block}
 <div class="app">
 <header class="bar">
   <div class="bar-in">
-    <svg class="logo" viewBox="0 0 512 512" aria-hidden="true">
+    <button class="iconbtn" id="instalar" type="button" hidden aria-label="Instalar app" title="Instalar app">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>
+    </button>
+    <span id="hueco" aria-hidden="true"></span>
+    <div class="brandbox">
+    <svg class="logo" viewBox="88 104 336 346" aria-hidden="true">
       <path d="M150 262 C150 120 362 120 362 262" fill="none" stroke="#EFA383" stroke-width="24" stroke-linecap="round"/>
       <circle cx="198" cy="252" r="44" fill="#BDE8D4"/>
       <circle cx="306" cy="246" r="48" fill="#FFE39A"/>
@@ -315,12 +321,10 @@ svg{display:block}
       <h1>Mi Canastita</h1>
       <p id="fecha">Lista de compras</p>
     </div>
-    <button class="chipbtn" id="instalar" type="button" hidden>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Instalar
-    </button>
-    <button class="chipbtn sync" id="syncBtn" type="button" data-s="none" aria-label="Lista compartida">
+    </div>
+    <button class="iconbtn sync" id="syncBtn" type="button" data-s="none" aria-label="Lista compartida: sincronizar" title="Lista compartida">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18h10a4 4 0 0 0 .6-7.96A6 6 0 0 0 6.2 9.2 4.5 4.5 0 0 0 7 18z"/></svg>
-      <i></i><span id="syncTxt">Sincronizar</span>
+      <i></i><span class="sr" id="syncTxt">Sincronizar</span>
     </button>
   </div>
 </header>
@@ -689,7 +693,7 @@ svg{display:block}
       it = { id:uid(), name:nm, qty:QTYS[qtyIdx], unit:unidad, done:false, doneAt:0, at:Date.now(), del:false };
       marcar(it); state.items.push(it);
     }
-    cambio(); resetForm(); nombre.focus();
+    cambio(); resetForm(); nombre.blur();
   });
   $("cancelar").addEventListener("click", function(){ resetForm(); });
 
@@ -701,7 +705,7 @@ svg{display:block}
   }).join("");
   $("chips").addEventListener("click", function(ev){
     var b = ev.target.closest(".chip"); if (!b) return;
-    nombre.value = b.dataset.n; hint.hidden = true; pintarPreview(); nombre.focus();
+    nombre.value = b.dataset.n; hint.hidden = true; pintarPreview();
   });
 
   /* ===== Lista ===== */
@@ -771,7 +775,7 @@ svg{display:block}
       form.classList.add("editing"); $("addTxt").textContent = "Guardar cambios";
       $("formTitle").textContent = "Editando producto"; $("cancelar").hidden = false;
       pintarCantidad(); pintarUnidad(); pintarPreview();
-      form.scrollIntoView({ behavior:"smooth", block:"start" }); nombre.focus({ preventScroll:true });
+      form.scrollIntoView({ behavior:"smooth", block:"start" });
     }
   }
   $("pendientes").addEventListener("click", alClick);
@@ -822,13 +826,22 @@ svg{display:block}
   });
 
   /* Fecha de hoy bajo el título */
-  try {
-    var f = new Date().toLocaleDateString("es-PE", { weekday:"long", day:"numeric", month:"long" });
-    $("fecha").textContent = f.charAt(0).toUpperCase() + f.slice(1);
-  } catch(e) {}
+  function pintarFecha(){
+    try {
+      var el = $("fecha"), hoy = new Date();
+      var formatos = [{ weekday:"long", day:"numeric", month:"long" }, { weekday:"short", day:"numeric", month:"long" }, { weekday:"short", day:"numeric", month:"short" }];
+      for (var i = 0; i < formatos.length; i++){
+        var f = hoy.toLocaleDateString("es-PE", formatos[i]);
+        el.textContent = f.charAt(0).toUpperCase() + f.slice(1);
+        if (el.scrollWidth <= el.clientWidth + 1) break;
+      }
+    } catch(e) {}
+  }
+  pintarFecha();
+  window.addEventListener("resize", pintarFecha);
 
   $("limpiarEjemplos").addEventListener("click", function(){
-    state.items = []; state.examples = false; guardar(); render(); nombre.focus();
+    state.items = []; state.examples = false; guardar(); render();
   });
   $("quitarListos").addEventListener("click", function(){
     var hechos = vivos().filter(function(x){ return x.done; }), copia = JSON.stringify(hechos), n = hechos.length;
@@ -880,10 +893,10 @@ svg{display:block}
 
   /* Botón Instalar (cuando el navegador lo ofrece) */
   var promptInstalar = null;
-  window.addEventListener("beforeinstallprompt", function(e){ e.preventDefault(); promptInstalar = e; $("instalar").hidden = false; });
+  window.addEventListener("beforeinstallprompt", function(e){ e.preventDefault(); promptInstalar = e; $("instalar").hidden = false; $("hueco").hidden = true; });
   $("instalar").addEventListener("click", function(){
     if (!promptInstalar) return; promptInstalar.prompt();
-    promptInstalar.userChoice.finally(function(){ promptInstalar = null; $("instalar").hidden = true; });
+    promptInstalar.userChoice.finally(function(){ promptInstalar = null; $("instalar").hidden = true; $("hueco").hidden = false; });
   });
 
   /* ===== Sincronización con la nube (Supabase) =====
@@ -911,7 +924,11 @@ svg{display:block}
 
   var syncEstado = "none", syncando = false, otraVez = false, syncTimer = null;
   var ETIQ = { none:"Sincronizar", ok:"Sincronizada", busy:"Sincronizando", off:"Sin internet", err:"Sin conexión" };
-  function setEstado(s){ syncEstado = s; $("syncBtn").dataset.s = s; $("syncTxt").textContent = ETIQ[s]; pintarInfo(); }
+  function setEstado(s){
+    syncEstado = s; $("syncBtn").dataset.s = s; $("syncTxt").textContent = ETIQ[s];
+    $("syncBtn").setAttribute("aria-label", "Lista compartida: " + ETIQ[s]); $("syncBtn").title = "Lista compartida: " + ETIQ[s];
+    pintarInfo();
+  }
   function pintarInfo(){
     if (!state.sync) return;
     var t;

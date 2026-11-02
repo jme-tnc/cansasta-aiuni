@@ -24,22 +24,24 @@ BASKET = """
 <circle r="15" fill="#F7A9C2"/>
 </g>"""
 
-def icon_svg(scale=1.0, rounded=True):
-    bg = '<rect width="512" height="512" rx="112" fill="#FBD6E1"/>' if rounded else '<rect width="512" height="512" fill="#FBD6E1"/>'
-    dots = '<circle cx="256" cy="282" r="200" fill="#FFFFFF" opacity=".55"/>'
-    t = f'translate({256*(1-scale)} {256*(1-scale)+10*scale}) scale({scale})'
-    return f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">{bg}<g transform="{t}">{dots}{BASKET}</g></svg>'
+def icon_svg(scale=1.0, rounded=False):
+    """Fondo pastel a sangre completa (el celular le pone su propia forma) y la canastita sola, sin marco."""
+    grad = ('<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">'
+            '<stop offset="0" stop-color="#FCD3E2"/><stop offset="1" stop-color="#E6D8FF"/></linearGradient></defs>')
+    bg = f'<rect width="512" height="512" rx="{112 if rounded else 0}" fill="url(#g)"/>'
+    t = f'translate({256*(1-scale)} {256*(1-scale)-20*scale}) scale({scale})'
+    return f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">{grad}{bg}<g transform="{t}">{BASKET}</g></svg>'
 
-(OUT / "icons" / "favicon.svg").write_text(icon_svg(0.92))
+(OUT / "icons" / "favicon.svg").write_text(icon_svg(1.0, rounded=True))
 
 with sync_playwright() as p:
     b = p.chromium.launch()
     pg = b.new_page()
     for name, size, svg in [
-        ("icon-192.png", 192, icon_svg(0.92)),
-        ("icon-512.png", 512, icon_svg(0.92)),
-        ("apple-touch-icon.png", 180, icon_svg(0.86, rounded=False)),
-        ("maskable-512.png", 512, icon_svg(0.70, rounded=False)),
+        ("icon-192.png", 192, icon_svg(1.0)),
+        ("icon-512.png", 512, icon_svg(1.0)),
+        ("apple-touch-icon.png", 180, icon_svg(0.96)),
+        ("maskable-512.png", 512, icon_svg(0.80)),
     ]:
         pg.set_viewport_size({"width": size, "height": size})
         pg.set_content(f'<html><body style="margin:0;background:transparent">'
@@ -56,8 +58,8 @@ manifest = {
     "scope": "./",
     "display": "standalone",
     "orientation": "portrait",
-    "background_color": "#FFF6F8",
-    "theme_color": "#FBD6E1",
+    "background_color": "#FFF7FA",
+    "theme_color": "#FFF7FA",
     "icons": [
         {"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png"},
         {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png"},
@@ -67,7 +69,7 @@ manifest = {
 (OUT / "manifest.webmanifest").write_text(json.dumps(manifest, ensure_ascii=False, indent=2))
 
 SW = """// Service worker de Mi Canastita: guarda la app para que abra sin internet
-const CACHE = 'canastita-v3';
+const CACHE = 'canastita-v4';
 const APP = ['./', './index.html', './manifest.webmanifest', './icons/icon-192.png',
              './icons/icon-512.png', './icons/apple-touch-icon.png', './icons/favicon.svg'];
 
@@ -110,8 +112,8 @@ HEAD = """<!doctype html>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Mi Canastita</title>
 <meta name="description" content="Lista de compras simple con íconos que cambian según el producto.">
-<meta name="theme-color" content="#FBD6E1" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#4A2E3E" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#FFF7FA" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1E151C" media="(prefers-color-scheme: dark)">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
