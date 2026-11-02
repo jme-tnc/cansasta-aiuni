@@ -280,9 +280,20 @@ svg{display:block}
   background:var(--glass);border:1px solid var(--glass-line);box-shadow:var(--shadow);
   -webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3);transition:transform .25s ease}
 .typing .tabbar{transform:translate(-50%,160%)}
-.tab{border:0;background:transparent;border-radius:20px;padding:10px 6px;display:flex;align-items:center;justify-content:center;gap:8px;font-weight:800;font-size:.95rem;color:var(--muted);transition:background-color .2s,color .2s}
+.tab{position:relative;z-index:1;border:0;background:transparent;border-radius:20px;padding:10px 6px;display:flex;align-items:center;justify-content:center;gap:8px;font-weight:800;font-size:.95rem;color:var(--muted);transition:background-color .2s,color .2s}
 .tab svg{width:22px;height:22px}
-.tab[aria-current="page"]{background:linear-gradient(135deg,var(--g1),var(--g2));color:var(--accent-ink);box-shadow:var(--shadow-sm)}
+.tab[aria-current="page"]{color:var(--accent-ink)}
+.tab-pill{position:absolute;top:6px;bottom:6px;left:6px;width:calc((100% - 16px)/2);border-radius:20px;background:linear-gradient(135deg,var(--g1),var(--g2));box-shadow:var(--shadow-sm);transition:transform .35s cubic-bezier(.3,1.25,.5,1)}
+.tabbar[data-v="comidas"] .tab-pill{transform:translateX(calc(100% + 4px))}
+.seg button svg.swap{width:15px;height:15px;display:inline-block;vertical-align:-2px;margin-left:2px;opacity:.8}
+@keyframes vistaIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes subIzq{from{opacity:0;transform:translateX(-22px)}to{opacity:1;transform:none}}
+@keyframes subDer{from{opacity:0;transform:translateX(22px)}to{opacity:1;transform:none}}
+@keyframes cabIn{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:none}}
+.anim-vista{animation:vistaIn .34s cubic-bezier(.2,.8,.3,1) both}
+.anim-izq{animation:subIzq .3s cubic-bezier(.2,.8,.3,1) both}
+.anim-der{animation:subDer .3s cubic-bezier(.2,.8,.3,1) both}
+.anim-cab{animation:cabIn .3s cubic-bezier(.2,.8,.3,1) both}
 
 /* ---------- Comidas: comunes ---------- */
 .stack-s{display:flex;flex-direction:column;gap:12px}
@@ -574,7 +585,8 @@ a.ghost{display:block;text-align:center;text-decoration:none}
 </main>
 </div>
 
-<nav class="tabbar" id="tabbar" aria-label="Secciones">
+<nav class="tabbar" id="tabbar" aria-label="Secciones" data-v="compras">
+  <span class="tab-pill" aria-hidden="true"></span>
   <button type="button" class="tab" data-v="compras" aria-current="page">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10h16l-1.6 8.4A2 2 0 0 1 16.4 20H7.6a2 2 0 0 1-2-1.6zM8 10l3-6M16 10l-3-6M9 14v2M15 14v2M12 14v2"/></svg>
     <span>Compras</span>
@@ -638,6 +650,20 @@ a.ghost{display:block;text-align:center;text-decoration:none}
   for (var d = 1; d <= 9; d++) QTYS.push(d / 10);
   for (var n = 1; n <= 100; n++) QTYS.push(n);
   var IDX_UNO = 9;
+  /* En gramos se eligen cantidades típicas de cocina */
+  var G_QTYS = [10,20,30,40,50,60,70,80,90,100,125,150,200,250,300,350,400,450,500,600,700,750,800,900];
+  var IDX_100G = G_QTYS.indexOf(100);
+  function qtysDe(u){ return u === "g" ? G_QTYS : QTYS; }
+  function masCercano(lista, v){ var m = 0; lista.forEach(function(q, i){ if (Math.abs(q - v) < Math.abs(lista[m] - v)) m = i; }); return m; }
+  /* Pasa la cantidad de una medida a otra: 0.5 kg → 500 g, 250 g → 0.3 kg */
+  function idxAlCambiar(idx, de, a){
+    var q = qtysDe(de)[idx];
+    if (de === "kg" && a === "g") return masCercano(G_QTYS, q * 1000);
+    if (de === "g" && a === "kg") return masCercano(QTYS, q / 1000);
+    if (a === "g") return IDX_100G;
+    if (de === "g") return IDX_UNO;
+    return idx;
+  }
 
   /* ===== Diccionario de íconos: [categoría, medida sugerida, [[emoji, palabras, medida opcional]]] ===== */
   var GRUPOS = [
@@ -756,6 +782,7 @@ a.ghost{display:block;text-align:center;text-decoration:none}
   function cantTxt(q, u){
     if (u === "s") return "S/ " + q.toFixed(2);
     if (u === "kg") return numTxt(q) + " kg";
+    if (u === "g") return Math.round(q) + " g";
     return numTxt(q) + " unid.";
   }
   function esc(s){ return String(s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
@@ -801,19 +828,32 @@ a.ghost{display:block;text-align:center;text-decoration:none}
       menos = $("menos"), mas = $("mas"), seg = $("unidades"), hint = $("hint");
   var qtyIdx = IDX_UNO, unidad = "u", unidadTocada = false, editId = null, ultimoEmoji = "🛍️";
 
-  QTYS.forEach(function(q, i){
-    var o = document.createElement("option"); o.value = i; o.textContent = numTxt(q); sel.appendChild(o);
-  });
-
+  var listaSel = null;
   function pintarCantidad(){
+    var lista = qtysDe(unidad);
+    if (listaSel !== lista){
+      sel.innerHTML = lista.map(function(q, i){ return '<option value="' + i + '">' + numTxt(q) + '</option>'; }).join("");
+      listaSel = lista;
+    }
+    if (qtyIdx > lista.length - 1) qtyIdx = lista.length - 1;
     sel.value = String(qtyIdx);
-    menos.disabled = qtyIdx <= 0; mas.disabled = qtyIdx >= QTYS.length - 1;
+    menos.disabled = qtyIdx <= 0; mas.disabled = qtyIdx >= lista.length - 1;
+  }
+  function cambiarUnidad(nueva){
+    if (nueva === unidad) return;
+    qtyIdx = idxAlCambiar(qtyIdx, unidad, nueva); unidad = nueva;
+    pintarCantidad(); pintarUnidad();
   }
   function pintarUnidad(){
     Array.prototype.forEach.call(seg.querySelectorAll("button"), function(b, i){
-      var on = b.dataset.u === unidad;
+      var on = b.dataset.u === unidad || (b.dataset.u === "kg" && unidad === "g");
       b.setAttribute("aria-pressed", String(on));
       if (on) $("segPill").style.transform = "translateX(" + (i * 100) + "%)";
+      if (b.dataset.u === "kg"){
+        /* El botón de peso alterna entre Kg y g; cuando está activo muestra las flechitas */
+        b.innerHTML = (unidad === "g" ? "g" : "Kg") + (on ? ' <svg class="swap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h11l-3-3M17 17H6l3 3"/></svg>' : "");
+        b.setAttribute("aria-label", unidad === "g" ? "Gramos (toca para cambiar a kilos)" : (on ? "Kilos (toca para cambiar a gramos)" : "Kilos"));
+      }
     });
   }
   function pintarPreview(){
@@ -823,15 +863,17 @@ a.ghost{display:block;text-align:center;text-decoration:none}
       preview.textContent = e.emoji; ultimoEmoji = e.emoji;
       preview.classList.remove("pop"); void preview.offsetWidth; preview.classList.add("pop");
     }
-    if (r && r.exacto && !unidadTocada && r.e.unit && r.e.unit !== unidad){ unidad = r.e.unit; pintarUnidad(); }
+    if (r && r.exacto && !unidadTocada && r.e.unit && r.e.unit !== unidad && !(r.e.unit === "kg" && unidad === "g")) cambiarUnidad(r.e.unit);
   }
 
   menos.addEventListener("click", function(){ if (qtyIdx > 0){ qtyIdx--; pintarCantidad(); } });
-  mas.addEventListener("click", function(){ if (qtyIdx < QTYS.length - 1){ qtyIdx++; pintarCantidad(); } });
+  mas.addEventListener("click", function(){ if (qtyIdx < qtysDe(unidad).length - 1){ qtyIdx++; pintarCantidad(); } });
   sel.addEventListener("change", function(){ qtyIdx = parseInt(sel.value, 10) || 0; pintarCantidad(); });
   seg.addEventListener("click", function(ev){
     var b = ev.target.closest("button"); if (!b) return;
-    unidad = b.dataset.u; unidadTocada = true; pintarUnidad();
+    var u = b.dataset.u;
+    if (u === "kg") u = unidad === "kg" ? "g" : (unidad === "g" ? "kg" : "kg");   // tocar Kg otra vez cambia a gramos
+    unidadTocada = true; cambiarUnidad(u);
   });
   nombre.addEventListener("input", function(){ hint.hidden = true; pintarPreview(); });
 
@@ -852,10 +894,10 @@ a.ghost{display:block;text-align:center;text-decoration:none}
     if (state.examples){ state.items = []; state.examples = false; }
     var it = editId ? buscarItem(editId) : null;
     if (it && !it.del){
-      it.name = nm; it.qty = QTYS[qtyIdx]; it.unit = unidad; marcar(it);
+      it.name = nm; it.qty = qtysDe(unidad)[qtyIdx]; it.unit = unidad; marcar(it);
       aviso("Cambios guardados");
     } else {
-      it = { id:uid(), name:nm, qty:QTYS[qtyIdx], unit:unidad, done:false, doneAt:0, at:Date.now(), del:false };
+      it = { id:uid(), name:nm, qty:qtysDe(unidad)[qtyIdx], unit:unidad, done:false, doneAt:0, at:Date.now(), del:false };
       marcar(it); state.items.push(it);
     }
     cambio(); resetForm(); nombre.blur();
@@ -923,7 +965,7 @@ a.ghost{display:block;text-align:center;text-decoration:none}
       borrar(it);
     } else if (ev.target.closest(".body")){
       editId = it.id; nombre.value = it.name; unidad = it.unit; unidadTocada = true;
-      var k = QTYS.indexOf(it.qty); qtyIdx = k >= 0 ? k : IDX_UNO;
+      var k = qtysDe(it.unit).indexOf(it.qty); qtyIdx = k >= 0 ? k : (it.unit === "g" ? masCercano(G_QTYS, it.qty) : IDX_UNO);
       form.classList.add("editing"); $("addTxt").textContent = "Guardar cambios";
       $("formTitle").textContent = "Editando producto"; $("cancelar").hidden = false;
       pintarCantidad(); pintarUnidad(); pintarPreview();
@@ -1266,6 +1308,7 @@ a.ghost{display:block;text-align:center;text-decoration:none}
     /* En Comidas el encabezado muestra Menú / Recetas en lugar del título y la fecha */
     $("marca").hidden = vista === "comidas"; $("subSeg").hidden = vista !== "comidas";
     document.body.classList.toggle("vista-comidas", vista === "comidas");
+    $("tabbar").dataset.v = vista;
     Array.prototype.forEach.call($("tabbar").querySelectorAll(".tab"), function(b){
       if (b.dataset.v === vista) b.setAttribute("aria-current", "page"); else b.removeAttribute("aria-current");
     });
@@ -1281,11 +1324,21 @@ a.ghost{display:block;text-align:center;text-decoration:none}
   $("tabbar").addEventListener("click", function(ev){
     var b = ev.target.closest(".tab"); if (!b || b.dataset.v === vista) return;
     vista = b.dataset.v; recordarVista(); pintarVista(); window.scrollTo(0, 0);
+    animar($(vista === "comidas" ? "vComidas" : "vCompras"), "anim-vista");
+    animar($(vista === "comidas" ? "subSeg" : "marca"), "anim-cab");
   });
   $("subSeg").addEventListener("click", function(ev){
     var b = ev.target.closest("button[data-s]"); if (!b || b.dataset.s === sub) return;
+    var antes = ORDEN_SUB.indexOf(sub);
     sub = b.dataset.s; recordarVista(); pintarSub();
+    animar($(sub === "menu" ? "sMenu" : "sRecetas"), ORDEN_SUB.indexOf(sub) > antes ? "anim-der" : "anim-izq");
   });
+  /* Transición suave: se reinicia la animación cada vez que se muestra una pestaña */
+  function animar(el, clase){
+    if (!el) return;
+    el.classList.remove("anim-vista", "anim-izq", "anim-der", "anim-cab"); void el.offsetWidth; el.classList.add(clase);
+    el.addEventListener("animationend", function fin(){ el.classList.remove(clase); el.removeEventListener("animationend", fin); });
+  }
   /* La barra de pestañas se esconde mientras escribes para no tapar el teclado */
   document.addEventListener("focusin", function(e){
     if (e.target.matches && e.target.matches("input,textarea") && !e.target.closest(".sheet")) document.body.classList.add("typing");
@@ -1476,13 +1529,21 @@ a.ghost{display:block;text-align:center;text-decoration:none}
     return { nuevos:nuevos, ya:ya };
   }
 
-  function opcionesQty(sel){ return QTYS.map(function(q, i){ return '<option value="' + i + '"' + (q === sel ? " selected" : "") + '>' + numTxt(q) + '</option>'; }).join(""); }
-  function opcionesUnidad(u){ return [["u","unid."],["kg","kg"],["s","S/"]].map(function(o){ return '<option value="' + o[0] + '"' + (o[0] === u ? " selected" : "") + '>' + o[1] + '</option>'; }).join(""); }
+  function opcionesQty(sel, u){
+    var lista = qtysDe(u), k = lista.indexOf(sel); if (k < 0) k = masCercano(lista, sel);
+    return lista.map(function(q, i){ return '<option value="' + q + '"' + (i === k ? " selected" : "") + '>' + numTxt(q) + '</option>'; }).join("");
+  }
+  function cambiarFilaUnidad(row, nueva, previa){
+    var qs = row.querySelector(".in-q"), lista = qtysDe(previa), i = lista.indexOf(parseFloat(qs.value));
+    var j = idxAlCambiar(i < 0 ? 0 : i, previa, nueva);
+    qs.innerHTML = opcionesQty(qtysDe(nueva)[j], nueva); row.dataset.u = nueva;
+  }
+  function opcionesUnidad(u){ return [["u","unid."],["kg","kg"],["g","g"],["s","S/"]].map(function(o){ return '<option value="' + o[0] + '"' + (o[0] === u ? " selected" : "") + '>' + o[1] + '</option>'; }).join(""); }
   function filaIng(g){
     g = g || { name:"", qty:1, unit:"u" };
-    return '<div class="ing-row"' + (g.name ? ' data-ut="1"' : '') + '>' +
+    return '<div class="ing-row" data-u="' + (g.unit || "u") + '"' + (g.name ? ' data-ut="1"' : '') + '>' +
       '<input class="inp in-n" maxlength="50" placeholder="Ingrediente" aria-label="Ingrediente" value="' + esc(g.name) + '">' +
-      '<select class="inp in-q" aria-label="Cantidad">' + opcionesQty(g.qty || 1) + '</select>' +
+      '<select class="inp in-q" aria-label="Cantidad">' + opcionesQty(g.qty || 1, g.unit || "u") + '</select>' +
       '<select class="inp in-u" aria-label="Medida">' + opcionesUnidad(g.unit || "u") + '</select>' +
       '<button type="button" class="del" data-act="quitarFila" aria-label="Quitar ingrediente">' + EQUIS + '</button></div>';
   }
@@ -1527,14 +1588,19 @@ a.ghost{display:block;text-align:center;text-decoration:none}
       oninput: function(e){
         if (!e.target.classList.contains("in-n")) return;
         var row = e.target.closest(".ing-row"); if (row.dataset.ut) return;
-        var m = buscar(e.target.value, false); if (m && m.e.unit) row.querySelector(".in-u").value = m.e.unit;
+        var m = buscar(e.target.value, false), us = row.querySelector(".in-u");
+        if (m && m.e.unit && us.value !== m.e.unit){ cambiarFilaUnidad(row, m.e.unit, us.value); us.value = m.e.unit; }
       },
-      onchange: function(e){ if (e.target.classList.contains("in-u")) e.target.closest(".ing-row").dataset.ut = "1"; },
+      onchange: function(e){
+        if (!e.target.classList.contains("in-u")) return;
+        var row = e.target.closest(".ing-row"); row.dataset.ut = "1";
+        cambiarFilaUnidad(row, e.target.value, row.dataset.u || "u");
+      },
       guardar: function(){
         var nombre = $("reNombre").value.trim().replace(/\s+/g, " ");
         if (!nombre){ $("reErr").textContent = "Ponle un nombre a la receta."; $("reErr").hidden = false; $("reNombre").focus(); return; }
         var ings = Array.prototype.map.call($("reIngs").querySelectorAll(".ing-row"), function(row){
-          return { name:cap(row.querySelector(".in-n").value.trim().replace(/\s+/g, " ")), qty:QTYS[+row.querySelector(".in-q").value] || 1, unit:row.querySelector(".in-u").value };
+          return { name:cap(row.querySelector(".in-n").value.trim().replace(/\s+/g, " ")), qty:parseFloat(row.querySelector(".in-q").value) || 1, unit:row.querySelector(".in-u").value };
         }).filter(function(g){ return g.name; });
         var pasos = Array.prototype.map.call($("rePasos").querySelectorAll(".in-p"), function(x){ return x.value.trim(); }).filter(Boolean);
         var link = $("reLink").value.trim(); if (link && !/^https?:\/\//i.test(link)) link = "https://" + link;
