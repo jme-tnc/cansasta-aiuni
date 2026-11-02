@@ -67,7 +67,7 @@ manifest = {
 (OUT / "manifest.webmanifest").write_text(json.dumps(manifest, ensure_ascii=False, indent=2))
 
 SW = """// Service worker de Mi Canastita: guarda la app para que abra sin internet
-const CACHE = 'canastita-v2';
+const CACHE = 'canastita-v3';
 const APP = ['./', './index.html', './manifest.webmanifest', './icons/icon-192.png',
              './icons/icon-512.png', './icons/apple-touch-icon.png', './icons/favicon.svg'];
 

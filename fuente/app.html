@@ -4,198 +4,262 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&family=Nunito:wght@400;600;700;800&display=swap">
 <style>
-/* Layout: una columna tipo app (máx. 540px). Cabecera con borde festoneado como mantita de bebé,
-   tarjeta para agregar productos, resumen de avance y lista. Paleta: rosa algodón, lila, menta, durazno y mantequilla. */
+/* Layout: una columna tipo app (máx. 560px) sobre un fondo de nubes pastel. Barra superior fija y translúcida,
+   tarjeta resumen con anillo de avance, tarjeta para agregar y lista de tarjetas deslizables.
+   Paleta: rosa algodón, lila, menta, durazno y mantequilla. */
 :root{
-  --bg:#FFF6F8;
+  --bg:#FFF7FA;
+  --blob-1:#FFD6E5;
+  --blob-2:#E7DCFF;
+  --blob-3:#D5F4E8;
+  --blob-4:#FFE6D4;
+  --glass:rgba(255,255,255,.74);
+  --glass-bar:rgba(255,247,250,.78);
+  --glass-line:rgba(255,255,255,.9);
   --surface:#FFFFFF;
-  --surface-2:#FDF0F4;
-  --band:#FBD6E1;
-  --ink:#5A3546;
-  --muted:#9B7383;
-  --line:#F3D9E2;
-  --accent:#F5A9C0;
-  --accent-ink:#4E1E33;
-  --accent-deep:#E58AA7;
-  --accent-strong:#B8496F;
-  --accent-soft:#FCE3EB;
+  --surface-2:#FFF0F5;
+  --ink:#4D2B3D;
+  --muted:#9A7486;
+  --line:#F4DDE7;
+  --g1:#F8A8C4;
+  --g2:#D6B9F6;
+  --accent:#F49AB8;
+  --accent-ink:#45182F;
+  --accent-strong:#B3466E;
+  --accent-soft:#FDE4EE;
+  --danger-bg:#FFD3DF;
+  --danger-ink:#A7365E;
   --ring:#C25C80;
-  --star-1:#D9CCF5;
-  --star-2:#FFE7A3;
-  --c-fruta:#FFE2CF;
-  --c-verdura:#D4F1E3;
-  --c-lacteo:#FFF2C6;
-  --c-carne:#FBD7DF;
-  --c-despensa:#F4E8DA;
-  --c-bebe:#E6DCF8;
-  --c-hogar:#D9ECF8;
-  --c-otro:#F8E6EE;
   --ok:#3FA97C;
   --warn:#D9972E;
-  --shadow:0 10px 28px -14px rgba(184,73,111,.35);
-  --shadow-sm:0 4px 14px -10px rgba(184,73,111,.35);
+  --c-fruta:#FFE3D2;
+  --c-verdura:#D6F2E5;
+  --c-lacteo:#FFF2C8;
+  --c-carne:#FCD9E1;
+  --c-despensa:#F5E9DC;
+  --c-bebe:#E8DEFA;
+  --c-hogar:#DAEDF9;
+  --c-otro:#F9E7EF;
+  --toast-bg:rgba(77,43,61,.94);
+  --toast-ink:#FFF7FA;
+  --scrim:rgba(60,28,46,.38);
+  --shadow:0 18px 40px -22px rgba(179,70,110,.42),0 2px 6px -2px rgba(179,70,110,.08);
+  --shadow-sm:0 8px 18px -14px rgba(179,70,110,.5);
   --f-display:"Fredoka","Nunito",ui-rounded,system-ui,-apple-system,"Segoe UI",sans-serif;
   --f-body:"Nunito",ui-rounded,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --r-lg:28px;
+  --r-md:20px;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg:#241A23; --surface:#33242F; --surface-2:#3C2B37; --band:#4A2E3E;
-    --ink:#F9E8EF; --muted:#C9A8B7; --line:#4D3646;
-    --accent:#F2A2BB; --accent-ink:#3A1828; --accent-deep:#C77893; --accent-strong:#F7BBCE;
-    --accent-soft:#4F3042; --ring:#F7BBCE; --star-1:#7E6AA8; --star-2:#A88E4E;
-    --c-fruta:#5B4034; --c-verdura:#2E4A3F; --c-lacteo:#544A2D; --c-carne:#5B3442;
-    --c-despensa:#4C4034; --c-bebe:#43395C; --c-hogar:#2F4254; --c-otro:#4C3442;
-    --ok:#7FD6AE; --warn:#F0C070;
-    --shadow:0 10px 28px -14px rgba(0,0,0,.6); --shadow-sm:0 4px 14px -10px rgba(0,0,0,.6);
+    --bg:#1E151C; --blob-1:#4A2638; --blob-2:#342B52; --blob-3:#1F3A31; --blob-4:#3F2E24;
+    --glass:rgba(46,32,42,.74); --glass-bar:rgba(30,21,28,.8); --glass-line:rgba(255,255,255,.07);
+    --surface:#2D202A; --surface-2:#392935; --ink:#FAEAF1; --muted:#C7A8B7; --line:#493341;
+    --g1:#F2A2BB; --g2:#BBA0EC; --accent:#F2A2BB; --accent-ink:#2C1220; --accent-strong:#F7BBCE;
+    --accent-soft:#4C2D3F; --danger-bg:#5C2A3C; --danger-ink:#FFC2D4; --ring:#F7BBCE; --ok:#7FD6AE; --warn:#F0C070;
+    --c-fruta:#55392E; --c-verdura:#2B453B; --c-lacteo:#4F452A; --c-carne:#55303E;
+    --c-despensa:#463B30; --c-bebe:#3F3557; --c-hogar:#2C3E4F; --c-otro:#47313E;
+    --toast-bg:rgba(250,234,241,.95); --toast-ink:#2D202A; --scrim:rgba(0,0,0,.55);
+    --shadow:0 18px 40px -22px rgba(0,0,0,.75),0 2px 6px -2px rgba(0,0,0,.3); --shadow-sm:0 8px 18px -14px rgba(0,0,0,.8);
     color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
-  --bg:#241A23; --surface:#33242F; --surface-2:#3C2B37; --band:#4A2E3E;
-  --ink:#F9E8EF; --muted:#C9A8B7; --line:#4D3646;
-  --accent:#F2A2BB; --accent-ink:#3A1828; --accent-deep:#C77893; --accent-strong:#F7BBCE;
-  --accent-soft:#4F3042; --ring:#F7BBCE; --star-1:#7E6AA8; --star-2:#A88E4E;
-  --c-fruta:#5B4034; --c-verdura:#2E4A3F; --c-lacteo:#544A2D; --c-carne:#5B3442;
-  --c-despensa:#4C4034; --c-bebe:#43395C; --c-hogar:#2F4254; --c-otro:#4C3442;
-  --ok:#7FD6AE; --warn:#F0C070;
-  --shadow:0 10px 28px -14px rgba(0,0,0,.6); --shadow-sm:0 4px 14px -10px rgba(0,0,0,.6);
+  --bg:#1E151C; --blob-1:#4A2638; --blob-2:#342B52; --blob-3:#1F3A31; --blob-4:#3F2E24;
+  --glass:rgba(46,32,42,.74); --glass-bar:rgba(30,21,28,.8); --glass-line:rgba(255,255,255,.07);
+  --surface:#2D202A; --surface-2:#392935; --ink:#FAEAF1; --muted:#C7A8B7; --line:#493341;
+  --g1:#F2A2BB; --g2:#BBA0EC; --accent:#F2A2BB; --accent-ink:#2C1220; --accent-strong:#F7BBCE;
+  --accent-soft:#4C2D3F; --danger-bg:#5C2A3C; --danger-ink:#FFC2D4; --ring:#F7BBCE; --ok:#7FD6AE; --warn:#F0C070;
+  --c-fruta:#55392E; --c-verdura:#2B453B; --c-lacteo:#4F452A; --c-carne:#55303E;
+  --c-despensa:#463B30; --c-bebe:#3F3557; --c-hogar:#2C3E4F; --c-otro:#47313E;
+  --toast-bg:rgba(250,234,241,.95); --toast-ink:#2D202A; --scrim:rgba(0,0,0,.55);
+  --shadow:0 18px 40px -22px rgba(0,0,0,.75),0 2px 6px -2px rgba(0,0,0,.3); --shadow-sm:0 8px 18px -14px rgba(0,0,0,.8);
   color-scheme:dark;
 }
 
 *,*::before,*::after{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.45;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.45;-webkit-tap-highlight-color:transparent;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:16;background:var(--bg)}
 [hidden]{display:none!important}
 button,input,select,textarea{font:inherit;color:inherit}
-button{cursor:pointer}
+button{cursor:pointer;-webkit-user-select:none;user-select:none}
 :focus-visible{outline:3px solid var(--ring);outline-offset:2px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+svg{display:block}
 
-/* ---------- Cabecera ---------- */
-.top{position:relative;background:var(--band);padding-block:22px 16px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-.top::after{content:"";position:absolute;left:0;right:0;bottom:-13px;height:14px;
-  background:radial-gradient(circle at 12px 0,var(--band) 11.5px,transparent 12.5px) 0 0/24px 14px repeat-x}
-.top-in{position:relative;max-width:540px;margin:0 auto;display:flex;align-items:center;gap:14px}
-.logo{width:60px;height:60px;flex:none}
+/* Fondo de nubes pastel */
+.bg{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(520px 380px at -8% -6%,var(--blob-1),transparent 70%),
+    radial-gradient(460px 360px at 110% 14%,var(--blob-2),transparent 70%),
+    radial-gradient(520px 420px at 0% 78%,var(--blob-3),transparent 70%),
+    radial-gradient(420px 360px at 105% 100%,var(--blob-4),transparent 70%)}
+.app{position:relative;z-index:1}
+.glass{background:var(--glass);border:1px solid var(--glass-line);box-shadow:var(--shadow);
+  -webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3)}
+
+/* ---------- Barra superior ---------- */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:15;background:var(--glass-bar);
+  -webkit-backdrop-filter:blur(16px) saturate(1.3);backdrop-filter:blur(16px) saturate(1.3);
+  border-bottom:1px solid var(--glass-line);padding-block:10px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.bar-in{max-width:528px;margin:0 auto;display:flex;align-items:center;gap:10px}
+.logo{width:44px;height:44px;flex:none;border-radius:15px;background:var(--surface);box-shadow:var(--shadow-sm);padding:4px}
 .brand{flex:1;min-width:0}
-.brand h1{margin:0;font-family:var(--f-display);font-weight:600;font-size:1.85rem;line-height:1.05;letter-spacing:.2px;text-wrap:balance}
-.brand p{margin:3px 0 0;color:var(--muted);font-weight:700;font-size:.95rem}
-.stars{position:absolute;inset:0;pointer-events:none}
-.stars svg{position:absolute}
-.install{border:2px solid var(--accent-deep);background:var(--surface);color:var(--accent-strong);border-radius:999px;padding:7px 12px;font-weight:800;font-size:.85rem;flex:none}
-
-/* ---------- Contenedor ---------- */
-.wrap{max-width:572px;margin:0 auto;padding-block:30px 110px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:18px}
-
-/* ---------- Tarjeta para agregar ---------- */
-.composer{background:var(--surface);border:1px solid var(--line);border-radius:26px;padding:16px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:14px;overflow:hidden}
-.composer.editing{border-color:var(--accent-deep);border-width:2px}
-.name-row{display:flex;align-items:flex-end;gap:12px}
-.preview{width:64px;height:64px;border-radius:50%;flex:none;display:grid;place-items:center;font-size:34px;line-height:1;background:var(--c-otro);transition:background-color .3s ease;box-shadow:inset 0 -4px 0 rgba(0,0,0,.04)}
-.preview.pop{animation:pop .45s cubic-bezier(.3,1.7,.5,1)}
-@keyframes pop{0%{transform:scale(.6) rotate(-12deg)}100%{transform:scale(1) rotate(0)}}
-.field{flex:1;min-width:0}
-.lbl{display:block;font-size:.74rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin:0 0 6px 2px}
-#nombre{width:100%;border:2px solid var(--line);background:var(--surface-2);border-radius:16px;padding:12px 14px;font-size:1.08rem;font-weight:700;outline:none;transition:border-color .2s}
-#nombre:focus{border-color:var(--accent-deep)}
-#nombre::placeholder{color:var(--muted);font-weight:600;opacity:.85}
-.shake{animation:shake .38s}
-@keyframes shake{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
-.hint{margin:-6px 0 0 78px;font-size:.85rem;font-weight:700;color:var(--accent-strong)}
-
-.opts{display:flex;flex-wrap:wrap;gap:10px}
-.group{flex:1 1 auto;display:flex;flex-direction:column}
-.stepper{display:flex;align-items:center;justify-content:space-between;background:var(--surface-2);border:2px solid var(--line);border-radius:999px;padding:3px}
-.step{width:42px;height:42px;border-radius:50%;border:0;background:var(--surface);color:var(--accent-strong);font-size:1.5rem;font-weight:800;line-height:1;display:grid;place-items:center;box-shadow:var(--shadow-sm);flex:none}
-.step:active{transform:scale(.9)}
-.step:disabled{opacity:.4;cursor:default}
-#cantidad{appearance:none;-webkit-appearance:none;border:0;background:transparent;font-family:var(--f-display);font-weight:600;font-size:1.4rem;text-align:center;text-align-last:center;min-width:72px;flex:1;padding:4px;font-variant-numeric:tabular-nums;cursor:pointer;border-radius:12px}
-#cantidad option{font-family:var(--f-body);font-size:1rem}
-.seg{display:flex;background:var(--surface-2);border:2px solid var(--line);border-radius:999px;padding:3px;gap:2px}
-.seg button{flex:1;border:0;background:transparent;border-radius:999px;padding:10px 12px;font-weight:800;color:var(--muted);min-width:58px;transition:background-color .2s,color .2s}
-.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);box-shadow:0 3px 0 var(--accent-deep)}
-
-.add{border:0;border-radius:18px;background:var(--accent);color:var(--accent-ink);font-family:var(--f-display);font-weight:600;font-size:1.18rem;padding:14px 16px;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 0 var(--accent-deep);transition:transform .1s}
-.add:active{transform:translateY(3px);box-shadow:0 1px 0 var(--accent-deep)}
-.add svg{width:22px;height:22px}
-.cancel{align-self:center;border:0;background:transparent;color:var(--muted);font-weight:800;text-decoration:underline;text-underline-offset:3px;padding:2px 8px;margin-top:-6px}
-
-.chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 -16px;padding:2px 16px 4px}
-.chips::-webkit-scrollbar{display:none}
-.chip{flex:none;display:flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface-2);border-radius:999px;padding:6px 12px 6px 8px;font-weight:700;font-size:.92rem;white-space:nowrap}
-.chip span{font-size:1.1rem;line-height:1}
-.chip:active{transform:scale(.95)}
-
-/* ---------- Ejemplos ---------- */
-.banner{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--c-bebe);border-radius:18px;padding:12px 14px}
-.banner p{margin:0;flex:1 1 200px;font-weight:700;font-size:.95rem}
-.banner button{border:0;background:var(--surface);color:var(--accent-strong);border-radius:999px;padding:8px 14px;font-weight:800;box-shadow:var(--shadow-sm)}
-
-/* ---------- Resumen ---------- */
-.summary{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-.progress{flex:1 1 200px;min-width:0}
-.progress-top{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-weight:800}
-.progress-top small{color:var(--muted);font-size:.85rem;font-variant-numeric:tabular-nums}
-.bar{height:14px;border-radius:999px;background:var(--surface);border:1px solid var(--line);overflow:hidden;margin-top:6px}
-.bar i{display:block;height:100%;width:0;border-radius:999px;background:repeating-linear-gradient(-45deg,var(--accent) 0 9px,var(--accent-soft) 9px 18px);transition:width .45s ease}
-.total{background:var(--c-lacteo);border-radius:16px;padding:8px 14px;font-weight:800;font-variant-numeric:tabular-nums;display:flex;flex-direction:column;line-height:1.15}
-.total small{font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
-
-/* ---------- Lista ---------- */
-.section-t{margin:6px 2px -6px;font-family:var(--f-display);font-weight:500;font-size:1.05rem;color:var(--muted);display:flex;align-items:center;gap:8px}
-.section-t::after{content:"";flex:1;height:2px;border-radius:2px;background:repeating-linear-gradient(90deg,var(--line) 0 6px,transparent 6px 12px)}
-.list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
-.item{position:relative;display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:10px 8px 10px 12px;box-shadow:var(--shadow-sm);animation:in .35s ease both}
-@keyframes in{from{opacity:.2;transform:translateY(8px)}to{opacity:1;transform:none}}
-.check{width:36px;height:36px;border-radius:50%;border:2.5px solid var(--accent-deep);background:transparent;flex:none;display:grid;place-items:center;padding:0;transition:background-color .2s}
-.check svg{width:18px;height:18px;opacity:0;transform:scale(.3);transition:opacity .2s,transform .3s cubic-bezier(.3,1.7,.5,1)}
-.check path{stroke:var(--accent-ink)}
-.item.done .check{background:var(--accent);border-color:var(--accent)}
-.item.done .check svg{opacity:1;transform:scale(1)}
-.ic{width:48px;height:48px;border-radius:16px;display:grid;place-items:center;font-size:27px;line-height:1;flex:none}
-.body{flex:1;min-width:0;border:0;background:transparent;text-align:left;padding:2px 0;display:flex;flex-direction:column;align-items:flex-start;gap:4px;border-radius:10px}
-.nm{font-weight:800;font-size:1.06rem;line-height:1.2;overflow-wrap:anywhere}
-.qt{font-size:.86rem;font-weight:800;padding:2px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent-strong);font-variant-numeric:tabular-nums}
-.item.done{opacity:.6;box-shadow:none}
-.item.done .nm{text-decoration:line-through;text-decoration-thickness:2px;text-decoration-color:var(--accent-deep)}
-.del{width:40px;height:40px;border-radius:12px;border:0;background:transparent;color:var(--muted);flex:none;display:grid;place-items:center}
-.del svg{width:20px;height:20px}
-.del:hover{background:var(--surface-2);color:var(--accent-strong)}
-.burst{position:absolute;left:22px;top:6px;font-size:18px;pointer-events:none;animation:burst .8s ease-out forwards}
-@keyframes burst{0%{opacity:1;transform:translateY(0) scale(.6)}100%{opacity:0;transform:translateY(-34px) scale(1.25)}}
-
-.empty{text-align:center;padding:26px 16px 10px;color:var(--muted)}
-.empty svg{width:120px;height:120px;opacity:.9}
-.empty h2{margin:6px 0 4px;font-family:var(--f-display);font-weight:500;font-size:1.3rem;color:var(--ink)}
-.empty p{margin:0 auto;max-width:30ch;font-weight:600}
-
-.actions{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:4px}
-.ghost{border:2px solid var(--line);background:var(--surface);border-radius:999px;padding:9px 14px;font-weight:800;font-size:.92rem;color:var(--ink);display:flex;align-items:center;gap:6px}
-.ghost:hover{border-color:var(--accent-deep)}
-
-/* ---------- Aviso y panel de copiar ---------- */
-.toast{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);opacity:0;pointer-events:none;
-  max-width:calc(100% - 32px);width:max-content;background:var(--ink);color:var(--bg);border-radius:16px;padding:10px 10px 10px 16px;
-  display:flex;align-items:center;gap:12px;font-weight:700;box-shadow:var(--shadow);transition:opacity .25s,transform .25s;z-index:40}
-.toast.show{opacity:1;transform:translate(-50%,0);pointer-events:auto}
-.toast button{border:0;background:var(--accent);color:var(--accent-ink);border-radius:10px;padding:6px 12px;font-weight:800}
-.sheet{position:fixed;inset:0;background:rgba(40,20,30,.45);display:grid;place-items:end center;z-index:30;padding:16px;padding-bottom:calc(16px + env(safe-area-inset-bottom,0px))}
-.sheet-in{width:100%;max-width:540px;background:var(--surface);border-radius:24px;padding:16px;display:flex;flex-direction:column;gap:10px;box-shadow:var(--shadow)}
-.sheet-in h2{margin:0;font-family:var(--f-display);font-weight:500;font-size:1.2rem}
-.sheet-in textarea{width:100%;min-height:180px;border:2px solid var(--line);border-radius:14px;background:var(--surface-2);padding:10px;font-size:.95rem;resize:vertical}
-
-/* ---------- Sincronización ---------- */
-.sync{margin-top:8px;display:inline-flex;align-items:center;gap:7px;border:2px solid var(--accent-deep);background:var(--surface);color:var(--ink);border-radius:999px;padding:5px 12px 5px 10px;font-weight:800;font-size:.82rem}
-.sync i{width:9px;height:9px;border-radius:50%;background:var(--muted);flex:none}
+.brand h1{margin:0;font-family:var(--f-display);font-weight:600;font-size:1.32rem;line-height:1.05;letter-spacing:-.2px;white-space:nowrap}
+.brand p{margin:2px 0 0;color:var(--muted);font-weight:700;font-size:.8rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chipbtn{flex:none;display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);color:var(--ink);
+  border-radius:999px;padding:7px 12px 7px 10px;font-weight:800;font-size:.8rem;box-shadow:var(--shadow-sm);transition:transform .15s}
+.chipbtn:active{transform:scale(.95)}
+.chipbtn svg{width:17px;height:17px;color:var(--accent-strong)}
+.sync i{width:8px;height:8px;border-radius:50%;background:var(--muted);flex:none}
 .sync[data-s="ok"] i{background:var(--ok)}
 .sync[data-s="busy"] i{background:var(--warn);animation:pulso 1s ease-in-out infinite}
 .sync[data-s="off"] i,.sync[data-s="err"] i{background:var(--warn)}
 @keyframes pulso{50%{opacity:.3}}
+
+/* ---------- Contenedor ---------- */
+.wrap{max-width:560px;margin:0 auto;padding-block:18px 120px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  display:flex;flex-direction:column;gap:16px}
+
+/* ---------- Resumen ---------- */
+.hero{border-radius:var(--r-lg);padding:18px 18px 18px 20px;display:flex;align-items:center;gap:16px}
+.hero-txt{flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:2px}
+.eyebrow{margin:0;font-size:.72rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--accent-strong)}
+.hero-big{margin:0;font-family:var(--f-display);font-weight:600;font-size:1.9rem;line-height:1.05;letter-spacing:-.3px;text-wrap:balance}
+.hero-sub{margin:2px 0 0;color:var(--muted);font-weight:700;font-size:.92rem}
+.soles{margin-top:8px;display:inline-flex;align-items:center;gap:6px;background:var(--c-lacteo);border-radius:999px;padding:5px 12px 5px 8px;font-weight:800;font-size:.88rem;font-variant-numeric:tabular-nums}
+.soles b{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--surface);font-size:.7rem;color:var(--accent-strong)}
+.ring{position:relative;width:96px;height:96px;flex:none}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring .bgc{stroke:var(--accent-soft)}
+.ring .fgc{transition:stroke-dashoffset .6s cubic-bezier(.3,.8,.3,1)}
+.ring strong{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--f-display);font-weight:600;font-size:1.3rem;font-variant-numeric:tabular-nums}
+
+/* ---------- Tarjeta para agregar ---------- */
+.composer{scroll-margin-top:84px;border-radius:var(--r-lg);padding:16px;display:flex;flex-direction:column;gap:14px}
+.composer.editing{box-shadow:0 0 0 3px var(--g1),var(--shadow)}
+.comp-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.lbl{display:block;font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 7px 4px}
+.comp-head .lbl{margin:0 0 0 4px}
+.cancel{border:0;background:var(--accent-soft);color:var(--accent-strong);font-weight:800;font-size:.82rem;border-radius:999px;padding:5px 12px}
+.input-wrap{display:flex;align-items:center;gap:10px;background:var(--surface);border:2px solid var(--line);border-radius:22px;padding:6px 6px 6px 6px;transition:border-color .2s,box-shadow .2s}
+.input-wrap:focus-within{border-color:var(--g1);box-shadow:0 0 0 5px var(--accent-soft)}
+.preview{width:50px;height:50px;border-radius:16px;flex:none;display:grid;place-items:center;font-size:28px;line-height:1;background:var(--c-otro);transition:background-color .3s ease}
+.preview.pop{animation:pop .45s cubic-bezier(.3,1.7,.5,1)}
+@keyframes pop{0%{transform:scale(.6) rotate(-12deg)}100%{transform:scale(1) rotate(0)}}
+#nombre{flex:1;min-width:0;border:0;background:transparent;padding:10px 6px;font-size:1.08rem;font-weight:700;outline:none}
+#nombre::placeholder{color:var(--muted);font-weight:600;opacity:.85}
+.shake{animation:shake .38s}
+@keyframes shake{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+.hint{margin:-6px 0 0 8px;font-size:.85rem;font-weight:800;color:var(--accent-strong)}
+
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:420px){.opts{grid-template-columns:1fr}}
+.group{min-width:0;display:flex;flex-direction:column}
+.stepper{display:flex;align-items:center;justify-content:space-between;background:var(--surface-2);border-radius:18px;padding:4px}
+.step{width:44px;height:44px;border-radius:14px;border:0;background:var(--surface);color:var(--accent-strong);display:grid;place-items:center;box-shadow:var(--shadow-sm);flex:none;transition:transform .12s}
+.step svg{width:18px;height:18px}
+.step:active{transform:scale(.9)}
+.step:disabled{opacity:.4;cursor:default}
+#cantidad{appearance:none;-webkit-appearance:none;border:0;background:transparent;font-family:var(--f-display);font-weight:600;font-size:1.4rem;text-align:center;text-align-last:center;min-width:64px;flex:1;padding:4px;font-variant-numeric:tabular-nums;cursor:pointer;border-radius:12px}
+#cantidad option{font-family:var(--f-body);font-size:1rem}
+.seg{position:relative;display:grid;grid-template-columns:repeat(3,1fr);background:var(--surface-2);border-radius:18px;padding:4px;gap:0}
+.seg-pill{position:absolute;top:4px;bottom:4px;left:4px;width:calc((100% - 8px)/3);border-radius:14px;background:linear-gradient(135deg,var(--g1),var(--g2));box-shadow:var(--shadow-sm);transition:transform .3s cubic-bezier(.3,1.3,.5,1)}
+.seg button{position:relative;z-index:1;border:0;background:transparent;border-radius:14px;padding:12px 4px;font-weight:800;color:var(--muted);transition:color .2s}
+.seg button[aria-pressed="true"]{color:var(--accent-ink)}
+
+.add{border:0;border-radius:20px;background:linear-gradient(135deg,var(--g1),var(--g2));color:var(--accent-ink);font-family:var(--f-display);font-weight:600;font-size:1.15rem;
+  padding:15px 16px;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 12px 24px -14px var(--accent-strong);transition:transform .12s,filter .2s}
+.add:hover{filter:saturate(1.15)}
+.add:active{transform:scale(.98)}
+.add svg{width:22px;height:22px}
+.add:disabled{opacity:.6}
+
+.chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 -16px;padding:2px 16px 4px;scroll-snap-type:x proximity}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;scroll-snap-align:start;display:flex;align-items:center;gap:7px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 13px 6px 7px;font-weight:700;font-size:.9rem;white-space:nowrap;transition:transform .12s}
+.chip span{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;font-size:.95rem;line-height:1}
+.chip:active{transform:scale(.94)}
+
+/* ---------- Ejemplos ---------- */
+.banner{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--c-bebe);border-radius:var(--r-md);padding:12px 14px}
+.banner p{margin:0;flex:1 1 200px;font-weight:700;font-size:.92rem}
+.banner button{border:0;background:var(--surface);color:var(--accent-strong);border-radius:999px;padding:8px 14px;font-weight:800;box-shadow:var(--shadow-sm)}
+
+/* ---------- Lista ---------- */
+.sec{display:flex;align-items:center;gap:8px;margin:6px 4px -4px}
+.sec h2{margin:0;font-family:var(--f-display);font-weight:600;font-size:1.1rem}
+.count{min-width:24px;height:24px;padding:0 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent-strong);font-weight:800;font-size:.8rem;display:grid;place-items:center;font-variant-numeric:tabular-nums}
+.sec small{margin-left:auto;color:var(--muted);font-weight:700;font-size:.78rem}
+.list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.item{position:relative;border-radius:var(--r-md);animation:in .35s ease both}
+@keyframes in{from{opacity:.2;transform:translateY(8px)}to{opacity:1;transform:none}}
+.swipe-bg{position:absolute;inset:0;border-radius:var(--r-md);background:var(--danger-bg);color:var(--danger-ink);display:flex;align-items:center;justify-content:flex-end;gap:6px;padding-right:20px;font-weight:800;font-size:.9rem;opacity:0;transition:opacity .15s}
+.swipe-bg svg{width:20px;height:20px;transition:transform .2s}
+.item.dragging .swipe-bg{opacity:1}
+.item.armed .swipe-bg svg{transform:scale(1.25)}
+.row{position:relative;display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);
+  padding:10px 6px 10px 12px;box-shadow:var(--shadow-sm);touch-action:pan-y;transition:transform .25s cubic-bezier(.3,.9,.4,1),opacity .2s}
+.item.dragging .row{transition:none}
+.check{width:32px;height:32px;border-radius:50%;border:2.5px solid var(--g1);background:transparent;flex:none;display:grid;place-items:center;padding:0;transition:background-color .2s,border-color .2s,transform .15s}
+.check:active{transform:scale(.88)}
+.check svg{width:17px;height:17px;opacity:0;transform:scale(.3);transition:opacity .2s,transform .3s cubic-bezier(.3,1.7,.5,1)}
+.check path{stroke:var(--accent-ink)}
+.item.done .check{background:linear-gradient(135deg,var(--g1),var(--g2));border-color:transparent}
+.item.done .check svg{opacity:1;transform:scale(1)}
+.ic{width:48px;height:48px;border-radius:16px;display:grid;place-items:center;font-size:26px;line-height:1;flex:none}
+.body{flex:1;min-width:0;border:0;background:transparent;text-align:left;padding:2px 0;display:flex;flex-direction:column;align-items:flex-start;gap:4px;border-radius:10px}
+.nm{font-weight:800;font-size:1.04rem;line-height:1.2;overflow-wrap:anywhere}
+.qt{font-size:.82rem;font-weight:800;padding:2px 9px;border-radius:999px;background:var(--surface-2);color:var(--accent-strong);font-variant-numeric:tabular-nums}
+.item.done .row{background:var(--surface-2);box-shadow:none;border-color:transparent}
+.item.done .ic{filter:saturate(.6);opacity:.75}
+.item.done .nm{color:var(--muted);text-decoration:line-through;text-decoration-thickness:2px;text-decoration-color:var(--g1)}
+.del{width:38px;height:38px;border-radius:12px;border:0;background:transparent;color:var(--muted);flex:none;display:grid;place-items:center;opacity:.7}
+.del svg{width:18px;height:18px}
+.del:hover{background:var(--surface-2);color:var(--accent-strong);opacity:1}
+.burst{position:absolute;left:18px;top:4px;font-size:18px;pointer-events:none;animation:burst .8s ease-out forwards;z-index:2}
+@keyframes burst{0%{opacity:1;transform:translateY(0) scale(.6)}100%{opacity:0;transform:translateY(-34px) scale(1.25)}}
+
+.empty{text-align:center;padding:18px 16px 4px;color:var(--muted)}
+.empty svg{width:132px;height:132px;margin:0 auto}
+.empty h2{margin:6px 0 4px;font-family:var(--f-display);font-weight:600;font-size:1.3rem;color:var(--ink)}
+.empty p{margin:0 auto;max-width:30ch;font-weight:600}
+
+.actions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:6px}
+.act{border:1px solid var(--line);background:var(--glass);border-radius:18px;padding:12px 6px 10px;font-weight:800;font-size:.8rem;color:var(--ink);display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .12s}
+.act:active{transform:scale(.96)}
+.act span{display:grid;place-items:center;width:38px;height:38px;border-radius:13px;background:var(--accent-soft);color:var(--accent-strong)}
+.act svg{width:20px;height:20px}
+
+/* ---------- Aviso y hojas inferiores ---------- */
+.toast{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);opacity:0;pointer-events:none;
+  max-width:calc(100% - 32px);width:max-content;background:var(--toast-bg);color:var(--toast-ink);border-radius:999px;padding:8px 8px 8px 18px;
+  display:flex;align-items:center;gap:12px;font-weight:700;font-size:.95rem;box-shadow:var(--shadow);transition:opacity .25s,transform .3s cubic-bezier(.3,1.4,.5,1);z-index:40;
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.toast.show{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+.toast:not(:has(button:not([hidden]))){padding-right:18px}
+.toast button{border:0;background:linear-gradient(135deg,var(--g1),var(--g2));color:var(--accent-ink);border-radius:999px;padding:7px 14px;font-weight:800}
+.sheet{position:fixed;inset:0;background:var(--scrim);display:grid;place-items:end center;z-index:30;
+  padding:16px max(16px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));animation:fade .2s ease}
+@keyframes fade{from{opacity:0}}
+.sheet-in{width:100%;max-width:528px;max-height:calc(100% - 24px);overflow:auto;background:var(--surface);border-radius:30px;padding:10px 18px 18px;display:flex;flex-direction:column;gap:12px;box-shadow:var(--shadow);animation:up .35s cubic-bezier(.3,1.2,.5,1)}
+@keyframes up{from{transform:translateY(40px);opacity:.4}}
+.sheet-in::before{content:"";align-self:center;width:44px;height:5px;border-radius:5px;background:var(--line);margin-bottom:4px}
+.sheet-in h2{margin:0;font-family:var(--f-display);font-weight:600;font-size:1.3rem}
 .sheet-in p{margin:0;font-weight:600;color:var(--muted)}
-.sheet-in .add,.sheet-in .ghost{width:100%;justify-content:center}
-.codigo{font-family:var(--f-display);font-weight:600;font-size:clamp(1.1rem,5.4vw,1.45rem);letter-spacing:.03em;white-space:nowrap;text-align:center;background:var(--surface-2);border:2px dashed var(--accent-deep);border-radius:16px;padding:12px;user-select:all;-webkit-user-select:all;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
-#codigoIn{width:100%;border:2px solid var(--line);background:var(--surface-2);border-radius:14px;padding:12px;font-weight:800;font-size:1.1rem;letter-spacing:.06em;text-transform:uppercase;text-align:center;outline:none}
-#codigoIn:focus{border-color:var(--accent-deep)}
+.sheet-in .add{width:100%}
+.sheet-in textarea{width:100%;min-height:180px;border:2px solid var(--line);border-radius:16px;background:var(--surface-2);padding:12px;font-size:.95rem;resize:vertical}
+.stack{display:flex;flex-direction:column;gap:10px}
+.ghost{width:100%;border:2px solid var(--line);background:var(--surface);border-radius:18px;padding:12px 14px;font-weight:800;font-size:.95rem;color:var(--ink)}
+.ghost:hover{border-color:var(--g1)}
+.sheet-ic{width:56px;height:56px;border-radius:18px;display:grid;place-items:center;background:linear-gradient(135deg,var(--blob-1),var(--blob-2));color:var(--accent-strong)}
+.sheet-ic svg{width:28px;height:28px}
+.codigo{font-family:var(--f-display);font-weight:600;font-size:clamp(1.1rem,5.4vw,1.45rem);letter-spacing:.03em;white-space:nowrap;text-align:center;background:var(--surface-2);border:2px dashed var(--g1);border-radius:18px;padding:14px;user-select:all;-webkit-user-select:all;font-variant-numeric:tabular-nums}
+#codigoIn{width:100%;border:2px solid var(--line);background:var(--surface-2);border-radius:16px;padding:13px;font-weight:800;font-size:1.1rem;letter-spacing:.06em;text-transform:uppercase;text-align:center;outline:none}
+#codigoIn:focus{border-color:var(--g1)}
 .o{display:flex;align-items:center;gap:10px;color:var(--muted);font-weight:800;font-size:.85rem}
 .o::before,.o::after{content:"";flex:1;height:2px;background:var(--line);border-radius:2px}
 .err{color:var(--accent-strong)!important;font-weight:800!important}
@@ -206,15 +270,12 @@ button{cursor:pointer}
 }
 </style>
 
-<header class="top">
-  <div class="stars" aria-hidden="true">
-    <svg style="right:8%;top:10px" width="16" height="16" viewBox="0 0 24 24"><path fill="var(--star-2)" d="M12 1l3 7.5 8 .6-6.1 5.2 1.9 7.9L12 18l-6.8 4.2 1.9-7.9L1 9.1l8-.6z"/></svg>
-    <svg style="right:22%;top:38px" width="10" height="10" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="var(--star-1)"/></svg>
-    <svg style="right:3%;top:52px" width="12" height="12" viewBox="0 0 24 24"><path fill="var(--star-1)" d="M12 1l3 7.5 8 .6-6.1 5.2 1.9 7.9L12 18l-6.8 4.2 1.9-7.9L1 9.1l8-.6z"/></svg>
-  </div>
-  <div class="top-in">
+<div class="bg" aria-hidden="true"></div>
+
+<div class="app">
+<header class="bar">
+  <div class="bar-in">
     <svg class="logo" viewBox="0 0 512 512" aria-hidden="true">
-      <circle cx="256" cy="270" r="230" fill="var(--surface)" opacity=".7"/>
       <path d="M150 262 C150 120 362 120 362 262" fill="none" stroke="#EFA383" stroke-width="24" stroke-linecap="round"/>
       <circle cx="198" cy="252" r="44" fill="#BDE8D4"/>
       <circle cx="306" cy="246" r="48" fill="#FFE39A"/>
@@ -234,21 +295,44 @@ button{cursor:pointer}
     </svg>
     <div class="brand">
       <h1>Mi Canastita</h1>
-      <p>Lista de compras</p>
-      <button class="sync" id="syncBtn" type="button" data-s="none"><i></i><span id="syncTxt">Solo en este celular</span></button>
+      <p id="fecha">Lista de compras</p>
     </div>
-    <button class="install" id="instalar" type="button" hidden>Instalar</button>
+    <button class="chipbtn" id="instalar" type="button" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Instalar
+    </button>
+    <button class="chipbtn sync" id="syncBtn" type="button" data-s="none" aria-label="Lista compartida">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18h10a4 4 0 0 0 .6-7.96A6 6 0 0 0 6.2 9.2 4.5 4.5 0 0 0 7 18z"/></svg>
+      <i></i><span id="syncTxt">Sincronizar</span>
+    </button>
   </div>
 </header>
 
 <main class="wrap">
-  <form class="composer" id="form" autocomplete="off" novalidate>
-    <div class="name-row">
+  <section class="hero glass" id="summary" aria-live="polite">
+    <div class="hero-txt">
+      <p class="eyebrow" id="heroEyebrow">Por comprar</p>
+      <p class="hero-big" id="heroBig">0 productos</p>
+      <p class="hero-sub" id="progTxt">0 de 0 en la canasta</p>
+      <span class="soles" id="total" hidden><b>S/</b><span id="totalTxt">S/ 0.00</span></span>
+    </div>
+    <div class="ring" aria-hidden="true">
+      <svg viewBox="0 0 120 120">
+        <defs><linearGradient id="gradAnillo" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--g1)"/><stop offset="1" style="stop-color:var(--g2)"/></linearGradient></defs>
+        <circle class="bgc" cx="60" cy="60" r="50" fill="none" stroke-width="12"/>
+        <circle class="fgc" id="anillo" cx="60" cy="60" r="50" fill="none" stroke="url(#gradAnillo)" stroke-width="12" stroke-linecap="round" stroke-dasharray="314.16" stroke-dashoffset="314.16"/>
+      </svg>
+      <strong id="progPct">0%</strong>
+    </div>
+  </section>
+
+  <form class="composer glass" id="form" autocomplete="off" novalidate>
+    <div class="comp-head">
+      <span class="lbl" id="formTitle">Nuevo producto</span>
+      <button class="cancel" type="button" id="cancelar" hidden>Cancelar</button>
+    </div>
+    <div class="input-wrap">
       <div class="preview" id="preview" aria-hidden="true">🛍️</div>
-      <div class="field">
-        <label class="lbl" for="nombre" id="formTitle">¿Qué hay que comprar?</label>
-        <input id="nombre" name="nombre" type="text" maxlength="60" placeholder="Ej. leche, palta, pañales…" enterkeyhint="done">
-      </div>
+      <input id="nombre" name="nombre" type="text" maxlength="60" placeholder="¿Qué hay que comprar?" enterkeyhint="done" aria-labelledby="formTitle">
     </div>
     <p class="hint" id="hint" hidden>Escribe el nombre del producto</p>
 
@@ -256,15 +340,16 @@ button{cursor:pointer}
       <div class="group">
         <span class="lbl" id="cantLbl">Cantidad</span>
         <div class="stepper" role="group" aria-labelledby="cantLbl">
-          <button type="button" class="step" id="menos" aria-label="Menos">−</button>
+          <button type="button" class="step" id="menos" aria-label="Menos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12h14"/></svg></button>
           <label for="cantidad" class="sr">Elegir cantidad</label>
           <select id="cantidad"></select>
-          <button type="button" class="step" id="mas" aria-label="Más">+</button>
+          <button type="button" class="step" id="mas" aria-label="Más"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
         </div>
       </div>
       <div class="group">
         <span class="lbl" id="uniLbl">Medida</span>
         <div class="seg" role="group" aria-labelledby="uniLbl" id="unidades">
+          <span class="seg-pill" id="segPill" aria-hidden="true"></span>
           <button type="button" data-u="u" aria-pressed="true">Unid.</button>
           <button type="button" data-u="kg" aria-pressed="false">Kg</button>
           <button type="button" data-u="s" aria-pressed="false">S/</button>
@@ -276,7 +361,6 @@ button{cursor:pointer}
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
       <span id="addTxt">Agregar a la lista</span>
     </button>
-    <button class="cancel" type="button" id="cancelar" hidden>Cancelar edición</button>
 
     <div>
       <span class="lbl">Toque rápido</span>
@@ -289,35 +373,36 @@ button{cursor:pointer}
     <button type="button" id="limpiarEjemplos">Empezar mi lista</button>
   </div>
 
-  <section class="summary" id="summary" aria-live="polite">
-    <div class="progress">
-      <div class="progress-top"><span id="progTxt">0 de 0 en la canasta</span><small id="progPct">0%</small></div>
-      <div class="bar"><i id="barFill"></i></div>
-    </div>
-    <div class="total" id="total" hidden><small>Gasto en soles</small><span id="totalTxt">S/ 0.00</span></div>
-  </section>
-
+  <div class="sec" id="secPend" hidden><h2>Por comprar</h2><span class="count" id="cPend">0</span><small>Desliza ← para quitar</small></div>
   <ul class="list" id="pendientes" aria-label="Por comprar"></ul>
-  <h2 class="section-t" id="tituloListos" hidden>Ya en la canasta</h2>
+  <div class="sec" id="tituloListos" hidden><h2>En la canasta</h2><span class="count" id="cListos">0</span></div>
   <ul class="list" id="listos" aria-label="Ya comprados"></ul>
 
   <div class="empty" id="vacio" hidden>
     <svg viewBox="0 0 512 512" aria-hidden="true">
-      <path d="M150 262 C150 120 362 120 362 262" fill="none" stroke="var(--accent-deep)" stroke-width="20" stroke-linecap="round"/>
-      <path d="M118 300 L394 300 L362 424 Q357 442 338 442 L174 442 Q155 442 150 424 Z" fill="var(--surface-2)" stroke="var(--line)" stroke-width="6"/>
-      <rect x="96" y="268" width="320" height="50" rx="25" fill="var(--accent)"/>
-      <circle cx="256" cy="150" r="18" fill="var(--accent-deep)"/>
+      <circle cx="256" cy="290" r="200" fill="var(--accent-soft)"/>
+      <path d="M150 262 C150 120 362 120 362 262" fill="none" stroke="var(--g1)" stroke-width="20" stroke-linecap="round"/>
+      <path d="M118 300 L394 300 L362 424 Q357 442 338 442 L174 442 Q155 442 150 424 Z" fill="var(--surface)" stroke="var(--line)" stroke-width="6"/>
+      <rect x="96" y="268" width="320" height="50" rx="25" fill="var(--g2)"/>
+      <circle cx="256" cy="150" r="18" fill="var(--g1)"/>
     </svg>
     <h2>Tu canastita está vacía</h2>
     <p>Escribe arriba lo que necesitas y toca “Agregar a la lista”.</p>
   </div>
 
   <div class="actions" id="acciones" hidden>
-    <button class="ghost" type="button" id="compartir">📤 Compartir lista</button>
-    <button class="ghost" type="button" id="quitarListos">🧺 Quitar comprados</button>
-    <button class="ghost" type="button" id="vaciar">🗑️ Vaciar todo</button>
+    <button class="act" type="button" id="compartir">
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4M8 8l4-4 4 4M5 13v5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-5"/></svg></span>Compartir
+    </button>
+    <button class="act" type="button" id="quitarListos">
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10h16l-1.6 8.4A2 2 0 0 1 16.4 20H7.6a2 2 0 0 1-2-1.6zM8 10l3-6M16 10l-3-6M10 14l1.5 1.5L14.5 13"/></svg></span>Quitar comprados
+    </button>
+    <button class="act" type="button" id="vaciar">
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></svg></span>Vaciar todo
+    </button>
   </div>
 </main>
+</div>
 
 <div class="toast" id="toast" role="status"><span id="toastTxt"></span><button type="button" id="toastBtn" hidden>Deshacer</button></div>
 
@@ -332,10 +417,11 @@ button{cursor:pointer}
 
 <div class="sheet" id="syncSheet" hidden>
   <div class="sheet-in" role="dialog" aria-modal="true" aria-labelledby="syncT">
+    <div class="sheet-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18h10a4 4 0 0 0 .6-7.96A6 6 0 0 0 6.2 9.2 4.5 4.5 0 0 0 7 18z"/></svg></div>
     <h2 id="syncT">Lista compartida</h2>
     <div id="syncNo">
-      <div style="display:flex;flex-direction:column;gap:10px">
-        <p>Crea una lista compartida y ábrela en otro celular con el mismo código. Lo que agregues o marques se verá en los dos, y tu lista queda guardada en la nube.</p>
+      <div class="stack">
+        <p>Ahora la lista está solo en este celular. Crea una lista compartida y ábrela en otro celular con el mismo código: lo que agregues o marques se verá en los dos y quedará guardado en la nube.</p>
         <button class="add" type="button" id="crearLista"><span>Crear lista compartida</span></button>
         <div class="o">¿Ya tienes un código?</div>
         <label for="codigoIn" class="sr">Código de la lista</label>
@@ -344,7 +430,7 @@ button{cursor:pointer}
       </div>
     </div>
     <div id="syncSi" hidden>
-      <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="stack">
         <p>Este celular está conectado a la lista con el código:</p>
         <div class="codigo" id="codigoVer"></div>
         <button class="add" type="button" id="compartirEnlace"><span>Enviar enlace al otro celular</span></button>
@@ -537,8 +623,10 @@ button{cursor:pointer}
     menos.disabled = qtyIdx <= 0; mas.disabled = qtyIdx >= QTYS.length - 1;
   }
   function pintarUnidad(){
-    Array.prototype.forEach.call(seg.querySelectorAll("button"), function(b){
-      b.setAttribute("aria-pressed", String(b.dataset.u === unidad));
+    Array.prototype.forEach.call(seg.querySelectorAll("button"), function(b, i){
+      var on = b.dataset.u === unidad;
+      b.setAttribute("aria-pressed", String(on));
+      if (on) $("segPill").style.transform = "translateX(" + (i * 100) + "%)";
     });
   }
   function pintarPreview(){
@@ -563,7 +651,7 @@ button{cursor:pointer}
   function resetForm(){
     nombre.value = ""; qtyIdx = IDX_UNO; unidad = "u"; unidadTocada = false; editId = null;
     form.classList.remove("editing"); $("addTxt").textContent = "Agregar a la lista";
-    $("formTitle").textContent = "¿Qué hay que comprar?"; $("cancelar").hidden = true;
+    $("formTitle").textContent = "Nuevo producto"; $("cancelar").hidden = true;
     pintarCantidad(); pintarUnidad(); pintarPreview();
   }
 
@@ -590,7 +678,8 @@ button{cursor:pointer}
   /* Toque rápido */
   var RAPIDOS = ["Leche","Pan","Huevos","Pañales","Palta","Pollo","Arroz","Plátano","Papa","Toallitas","Queso","Manzana"];
   $("chips").innerHTML = RAPIDOS.map(function(n){
-    return '<button type="button" class="chip" data-n="' + esc(n) + '"><span>' + iconoDe(n).emoji + '</span>' + esc(n) + '</button>';
+    var e = iconoDe(n);
+    return '<button type="button" class="chip" data-n="' + esc(n) + '"><span style="background:var(--c-' + e.cat + ')">' + e.emoji + '</span>' + esc(n) + '</button>';
   }).join("");
   $("chips").addEventListener("click", function(ev){
     var b = ev.target.closest(".chip"); if (!b) return;
@@ -603,30 +692,47 @@ button{cursor:pointer}
   function fila(it){
     var e = iconoDe(it.name);
     return '<li class="item' + (it.done ? " done" : "") + '" data-id="' + it.id + '">' +
+      '<div class="swipe-bg" aria-hidden="true">Quitar ' + TACHO + '</div><div class="row">' +
       '<button type="button" class="check" aria-pressed="' + it.done + '" aria-label="' + (it.done ? "Desmarcar " : "Marcar como comprado: ") + esc(it.name) + '">' + CHECK + '</button>' +
       '<div class="ic" style="background:var(--c-' + e.cat + ')" aria-hidden="true">' + e.emoji + '</div>' +
       '<button type="button" class="body" aria-label="Editar ' + esc(it.name) + '"><span class="nm">' + esc(it.name) + '</span><span class="qt">' + cantTxt(it.qty, it.unit) + '</span></button>' +
-      '<button type="button" class="del" aria-label="Quitar ' + esc(it.name) + '">' + EQUIS + '</button></li>';
+      '<button type="button" class="del" aria-label="Quitar ' + esc(it.name) + '">' + EQUIS + '</button></div></li>';
   }
+  var TACHO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></svg>';
+  var ANILLO = 314.16;
   function render(){
     var items = vivos();
     var pend = items.filter(function(x){ return !x.done; }).sort(function(a,b){ return b.at - a.at; });
     var list = items.filter(function(x){ return x.done; }).sort(function(a,b){ return (b.doneAt||0) - (a.doneAt||0); });
     $("pendientes").innerHTML = pend.map(fila).join("");
     $("listos").innerHTML = list.map(fila).join("");
-    $("tituloListos").hidden = list.length === 0;
-    var total = items.length, hechos = list.length;
+    var total = items.length, hechos = list.length, faltan = pend.length;
+    $("secPend").hidden = faltan === 0; $("cPend").textContent = faltan;
+    $("tituloListos").hidden = hechos === 0; $("cListos").textContent = hechos;
     $("vacio").hidden = total > 0; $("summary").hidden = total === 0; $("acciones").hidden = total === 0;
     $("banner").hidden = !state.examples;
+    if (faltan === 0 && total > 0){
+      $("heroEyebrow").textContent = "¡Lista completa!"; $("heroBig").textContent = "Todo comprado 🎉";
+    } else {
+      $("heroEyebrow").textContent = "Por comprar"; $("heroBig").textContent = faltan + (faltan === 1 ? " producto" : " productos");
+    }
     $("progTxt").textContent = hechos + " de " + total + " en la canasta";
     var pct = total ? Math.round(hechos / total * 100) : 0;
-    $("progPct").textContent = pct + "%"; $("barFill").style.width = pct + "%";
+    $("progPct").textContent = pct + "%";
+    $("anillo").style.strokeDashoffset = String(ANILLO * (1 - pct / 100));
     var soles = items.filter(function(x){ return x.unit === "s"; }).reduce(function(s, x){ return s + x.qty; }, 0);
-    $("total").hidden = soles === 0; $("totalTxt").textContent = "S/ " + soles.toFixed(2);
-    $("quitarListos").hidden = hechos === 0;
+    $("total").hidden = soles === 0; $("totalTxt").textContent = soles.toFixed(2) + " en soles";
+    $("quitarListos").disabled = hechos === 0; $("quitarListos").style.opacity = hechos === 0 ? ".5" : "";
   }
 
+  function borrar(it){
+    var copia = JSON.stringify([it]);
+    it.del = true; marcar(it); cambio();
+    aviso("Se quitó " + it.name, function(){ restaurar(copia); cambio(); });
+  }
+  var ignorarClick = 0;
   function alClick(ev){
+    if (Date.now() - ignorarClick < 400) return;
     var li = ev.target.closest(".item"); if (!li) return;
     var it = buscarItem(li.dataset.id); if (!it || it.del) return;
     if (ev.target.closest(".check")){
@@ -636,11 +742,11 @@ button{cursor:pointer}
       if (it.done){
         var nuevo = document.querySelector('.item[data-id="' + it.id + '"]');
         if (nuevo){ var b = document.createElement("span"); b.className = "burst"; b.textContent = "💗"; b.setAttribute("aria-hidden","true"); nuevo.appendChild(b); }
+        var v = vivos();
+        if (v.length > 1 && v.every(function(x){ return x.done; })) aviso("¡Compraste todo! 🎉");
       }
     } else if (ev.target.closest(".del")){
-      var copia = JSON.stringify([it]);
-      it.del = true; marcar(it); cambio();
-      aviso("Se quitó " + it.name, function(){ restaurar(copia); cambio(); });
+      borrar(it);
     } else if (ev.target.closest(".body")){
       editId = it.id; nombre.value = it.name; unidad = it.unit; unidadTocada = true;
       var k = QTYS.indexOf(it.qty); qtyIdx = k >= 0 ? k : IDX_UNO;
@@ -652,6 +758,56 @@ button{cursor:pointer}
   }
   $("pendientes").addEventListener("click", alClick);
   $("listos").addEventListener("click", alClick);
+
+  /* Deslizar a la izquierda para quitar */
+  var arrastre = null, UMBRAL = 96;
+  function inicioArrastre(ev){
+    if (ev.pointerType === "mouse" && ev.button !== 0) return;
+    var row = ev.target.closest(".row"); if (!row || ev.target.closest(".check,.del")) return;
+    arrastre = { row:row, li:row.parentNode, x:ev.clientX, y:ev.clientY, dx:0, on:false, pid:ev.pointerId };
+  }
+  function moverArrastre(ev){
+    if (!arrastre || ev.pointerId !== arrastre.pid) return;
+    var dx = ev.clientX - arrastre.x, dy = ev.clientY - arrastre.y;
+    if (!arrastre.on){
+      if (Math.abs(dy) > 10 && Math.abs(dy) > Math.abs(dx)){ arrastre = null; return; }
+      if (dx < -10 && Math.abs(dx) > Math.abs(dy) * 1.2){
+        arrastre.on = true; arrastre.li.classList.add("dragging");
+        try { arrastre.row.setPointerCapture(ev.pointerId); } catch(e) {}
+      } else return;
+    }
+    arrastre.dx = Math.min(0, dx);
+    arrastre.row.style.transform = "translateX(" + arrastre.dx + "px)";
+    arrastre.li.classList.toggle("armed", arrastre.dx < -UMBRAL);
+  }
+  function finArrastre(ev){
+    if (!arrastre) return;
+    var a = arrastre; arrastre = null;
+    if (!a.on) return;
+    ignorarClick = Date.now();
+    a.li.classList.remove("dragging", "armed");
+    var it = buscarItem(a.li.dataset.id);
+    if (ev.type !== "pointercancel" && a.dx < -UMBRAL && it){
+      a.row.style.transform = "translateX(-110%)"; a.row.style.opacity = "0";
+      try { navigator.vibrate && navigator.vibrate(8); } catch(e) {}
+      setTimeout(function(){ borrar(it); }, 180);
+    } else {
+      a.row.style.transform = "";
+    }
+  }
+  ["pendientes","listos"].forEach(function(id){
+    var ul = $(id);
+    ul.addEventListener("pointerdown", inicioArrastre);
+    ul.addEventListener("pointermove", moverArrastre);
+    ul.addEventListener("pointerup", finArrastre);
+    ul.addEventListener("pointercancel", finArrastre);
+  });
+
+  /* Fecha de hoy bajo el título */
+  try {
+    var f = new Date().toLocaleDateString("es-PE", { weekday:"long", day:"numeric", month:"long" });
+    $("fecha").textContent = f.charAt(0).toUpperCase() + f.slice(1);
+  } catch(e) {}
 
   $("limpiarEjemplos").addEventListener("click", function(){
     state.items = []; state.examples = false; guardar(); render(); nombre.focus();
@@ -736,7 +892,7 @@ button{cursor:pointer}
   }
 
   var syncEstado = "none", syncando = false, otraVez = false, syncTimer = null;
-  var ETIQ = { none:"Solo en este celular", ok:"Sincronizada", busy:"Sincronizando…", off:"Sin internet", err:"Sin conexión a la nube" };
+  var ETIQ = { none:"Sincronizar", ok:"Sincronizada", busy:"Sincronizando", off:"Sin internet", err:"Sin conexión" };
   function setEstado(s){ syncEstado = s; $("syncBtn").dataset.s = s; $("syncTxt").textContent = ETIQ[s]; pintarInfo(); }
   function pintarInfo(){
     if (!state.sync) return;
