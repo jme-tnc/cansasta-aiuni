@@ -24,24 +24,36 @@ BASKET = """
 <circle r="15" fill="#F7A9C2"/>
 </g>"""
 
-def icon_svg(scale=1.0, rounded=False):
-    """Fondo pastel a sangre completa (el celular le pone su propia forma) y la canastita sola, sin marco."""
-    grad = ('<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">'
-            '<stop offset="0" stop-color="#FCD3E2"/><stop offset="1" stop-color="#E6D8FF"/></linearGradient></defs>')
-    bg = f'<rect width="512" height="512" rx="{112 if rounded else 0}" fill="url(#g)"/>'
-    t = f'translate({256*(1-scale)} {256*(1-scale)-20*scale}) scale({scale})'
-    return f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">{grad}{bg}<g transform="{t}">{BASKET}</g></svg>'
+GRAD = ('<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">'
+        '<stop offset="0" stop-color="#FCCFE0"/><stop offset="1" stop-color="#E3D4FF"/></linearGradient></defs>')
+# La canastita del ícono lleva un cuerpo durazno (no blanco) para que nada se lea como "marco"
+CANASTA = BASKET.replace('fill="#FFF3E6"', 'fill="#FFE6D3"')
 
-(OUT / "icons" / "favicon.svg").write_text(icon_svg(1.0, rounded=True))
+def icono_adaptable(escala):
+    """Para el celular (maskable): fondo degradado a sangre completa, sin bordes ni blancos.
+    El celular le pone su forma (círculo, gota, cuadrado) y la canastita queda dentro de la zona segura."""
+    t = f'translate({256*(1-escala)} {256*(1-escala)-18*escala}) scale({escala})'
+    return f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">{GRAD}<rect width="512" height="512" fill="url(#g)"/><g transform="{t}">{CANASTA}</g></svg>'
+
+def icono_redondo(escala=0.86):
+    """Para pantallas de carga y navegador (any): círculo degradado con la canastita, esquinas transparentes."""
+    t = f'translate({256*(1-escala)} {256*(1-escala)-18*escala}) scale({escala})'
+    return f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">{GRAD}<circle cx="256" cy="256" r="256" fill="url(#g)"/><g transform="{t}">{CANASTA}</g></svg>'
+
+# Se quitan los íconos viejos: con nombres nuevos el celular no puede reutilizar los anteriores
+for viejo in ["icon-192.png", "icon-512.png", "apple-touch-icon.png", "maskable-512.png", "favicon.svg"]:
+    (OUT / "icons" / viejo).unlink(missing_ok=True)
+(OUT / "icons" / "app-icono.svg").write_text(icono_redondo())
 
 with sync_playwright() as p:
     b = p.chromium.launch()
     pg = b.new_page()
     for name, size, svg in [
-        ("icon-192.png", 192, icon_svg(1.0)),
-        ("icon-512.png", 512, icon_svg(1.0)),
-        ("apple-touch-icon.png", 180, icon_svg(0.96)),
-        ("maskable-512.png", 512, icon_svg(0.80)),
+        ("app-192.png", 192, icono_redondo()),
+        ("app-512.png", 512, icono_redondo()),
+        ("app-adaptable-192.png", 192, icono_adaptable(0.74)),
+        ("app-adaptable-512.png", 512, icono_adaptable(0.74)),
+        ("app-apple-180.png", 180, icono_adaptable(0.86)),
     ]:
         pg.set_viewport_size({"width": size, "height": size})
         pg.set_content(f'<html><body style="margin:0;background:transparent">'
@@ -61,17 +73,18 @@ manifest = {
     "background_color": "#FFF7FA",
     "theme_color": "#FFF7FA",
     "icons": [
-        {"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png"},
-        {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png"},
-        {"src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"},
+        {"src": "icons/app-adaptable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable"},
+        {"src": "icons/app-adaptable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"},
+        {"src": "icons/app-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+        {"src": "icons/app-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
     ],
 }
 (OUT / "manifest.webmanifest").write_text(json.dumps(manifest, ensure_ascii=False, indent=2))
 
 SW = """// Service worker de Mi Canastita: guarda la app para que abra sin internet
-const CACHE = 'canastita-v9';
-const APP = ['./', './index.html', './manifest.webmanifest', './icons/icon-192.png',
-             './icons/icon-512.png', './icons/apple-touch-icon.png', './icons/favicon.svg'];
+const CACHE = 'canastita-v10';
+const APP = ['./', './index.html', './manifest.webmanifest', './icons/app-192.png', './icons/app-512.png',
+             './icons/app-adaptable-192.png', './icons/app-adaptable-512.png', './icons/app-apple-180.png', './icons/app-icono.svg'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(APP)).then(() => self.skipWaiting()));
@@ -116,8 +129,8 @@ HEAD = """<!doctype html>
 <meta name="theme-color" content="#FFF7FA" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#1E151C" media="(prefers-color-scheme: dark)">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" href="icons/app-icono.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/app-apple-180.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Mi Canastita">

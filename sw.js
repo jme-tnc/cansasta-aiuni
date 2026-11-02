@@ -1,7 +1,7 @@
 // Service worker de Mi Canastita: guarda la app para que abra sin internet
-const CACHE = 'canastita-v9';
-const APP = ['./', './index.html', './manifest.webmanifest', './icons/icon-192.png',
-             './icons/icon-512.png', './icons/apple-touch-icon.png', './icons/favicon.svg'];
+const CACHE = 'canastita-v10';
+const APP = ['./', './index.html', './manifest.webmanifest', './icons/app-192.png', './icons/app-512.png',
+             './icons/app-adaptable-192.png', './icons/app-adaptable-512.png', './icons/app-apple-180.png', './icons/app-icono.svg'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(APP)).then(() => self.skipWaiting()));
