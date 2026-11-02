@@ -6,6 +6,11 @@ Lista de compras en tonos pastel, hecha para usar desde el celular como app (PWA
 - 🔢 Cantidades de 0.10 a 0.90 y luego números enteros, en **unidades**, **kg** o **soles (S/)**.
 - ☁️ Lista compartida: crea un código y ábrelo en otro celular para ver los mismos datos.
 - 📶 Funciona sin internet; los cambios se envían solos cuando vuelve la conexión.
+- 🍼 Pestaña **Comidas de la bebé**:
+  - 🗓️ Menú semanal con fechas y 4 comidas al día (desayuno, almuerzo, media tarde y cena).
+  - 📖 Recetario con ingredientes, pasos, notas y enlace al video; un toque manda los ingredientes a Compras.
+  - ✅ Alimentos que ya probó (le gustó, no le gustó o tuvo reacción) con fecha y nota.
+- 🌙 Modo día y modo noche.
 
 **App:** https://jme-tnc.github.io/cansasta-aiuni/
 
