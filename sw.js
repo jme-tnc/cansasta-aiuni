@@ -1,5 +1,5 @@
 // Service worker de Mi Canastita: guarda la app para que abra sin internet
-const CACHE = 'canastita-v6';
+const CACHE = 'canastita-v7';
 const APP = ['./', './index.html', './manifest.webmanifest', './icons/icon-192.png',
              './icons/icon-512.png', './icons/apple-touch-icon.png', './icons/favicon.svg'];
 
@@ -16,7 +16,8 @@ self.addEventListener('fetch', e => {
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
   if (req.mode === 'navigate') {
-    e.respondWith(fetch(req).then(r => { const c = r.clone(); caches.open(CACHE).then(x => x.put('./index.html', c)); return r; })
+    // Siempre pide la versión más nueva al servidor (sin la caché del navegador) para que las mejoras lleguen al abrir la app
+    e.respondWith(fetch(req.url, { cache: 'no-cache', credentials: 'same-origin' }).then(r => { const c = r.clone(); if (r.ok) caches.open(CACHE).then(x => x.put('./index.html', c)); return r; })
       .catch(() => caches.match('./index.html')));
     return;
   }
