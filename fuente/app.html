@@ -104,6 +104,15 @@ svg{display:block}
 .bar{position:relative;z-index:2;padding-block:22px 2px;
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 .bar-in{max-width:528px;margin:0 auto;display:grid;grid-template-columns:48px minmax(0,1fr) 48px;align-items:center;gap:8px}
+.bar-in > #tema{grid-column:1;grid-row:1}
+.bar-in > .brandbox,.bar-in > .hseg{grid-column:2;grid-row:1}
+.bar-in > #syncBtn{grid-column:3;grid-row:1}
+.vista-comidas .bar{padding-block:18px 0}
+.seg.seg2{grid-template-columns:repeat(2,1fr)}
+.seg.seg2 .seg-pill{width:calc((100% - 8px)/2)}
+.hseg{height:48px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow-sm);border-radius:18px}
+.hseg button{display:flex;align-items:center;justify-content:center;gap:6px;padding:0 6px;font-size:.95rem;min-width:0}
+.hseg button svg{width:18px;height:18px;flex:none}
 .brandbox{min-width:0;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
 .logo{width:58px;height:58px;flex:none;filter:drop-shadow(0 6px 10px rgba(179,70,110,.18))}
 .brand{min-width:0;max-width:100%}
@@ -343,26 +352,7 @@ svg{display:block}
 .rc-body small{font-weight:700;font-size:.82rem;color:var(--muted)}
 .ar-body small{font-weight:700;font-size:.8rem;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
-/* ---------- Probados ---------- */
-.ali-sum{border-radius:var(--r-lg);padding:16px 18px;display:flex;flex-direction:column;gap:8px}
-.ali-top{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
-.ali-top .big{font-family:var(--f-display);font-weight:600;font-size:1.6rem;line-height:1.1}
-.ali-top strong{font-weight:800;color:var(--accent-strong);font-variant-numeric:tabular-nums}
-.pbar{height:12px;border-radius:999px;background:var(--accent-soft);overflow:hidden}
-.pbar i{display:block;height:100%;background:linear-gradient(90deg,var(--g1),var(--g2));border-radius:999px;transition:width .5s}
-.cnts{display:flex;gap:6px;flex-wrap:wrap}
-.cnt{background:var(--surface-2);border-radius:999px;padding:4px 10px;font-weight:800;font-size:.84rem;font-variant-numeric:tabular-nums}
-.ali-add{display:flex;gap:8px}
-.ali-add .input-wrap{flex:1;min-width:0;padding:5px}
-.grp{margin:4px 4px -4px;font-family:var(--f-display);font-weight:600;font-size:1.02rem;display:flex;gap:8px;align-items:center}
-.list-gap{display:flex;flex-direction:column;gap:8px}
-.arow{padding:10px 12px}
-.st{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;font-size:18px;background:var(--surface-2);flex:none}
-.st-si{background:var(--c-verdura)}
-.st-no{background:var(--c-lacteo)}
-.st-reaccion{background:var(--danger-bg)}
-
-/* ---------- Panel inferior (recetas, menú, alimentos) ---------- */
+/* ---------- Panel inferior (recetas y menú) ---------- */
 .sheet-in.tall{max-height:calc(100% - 8px)}
 .inp{width:100%;border:2px solid var(--line);background:var(--surface-2);border-radius:14px;padding:11px 12px;font-size:1rem;font-weight:700;outline:none;color:var(--ink);min-width:0}
 .inp:focus{border-color:var(--g1)}
@@ -408,10 +398,6 @@ a.ghost{display:block;text-align:center;text-decoration:none}
 .paso-row{display:grid;grid-template-columns:26px minmax(0,1fr) 36px;gap:6px;align-items:start}
 .paso-row::before{counter-increment:q;content:counter(q);width:26px;height:26px;margin-top:10px;border-radius:50%;background:var(--accent-soft);color:var(--accent-strong);display:grid;place-items:center;font-weight:800;font-size:.85rem}
 .ing-row .del,.paso-row .del{width:36px;height:36px}
-.st-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
-.stb{border:2px solid var(--line);background:var(--surface);border-radius:16px;padding:10px;display:flex;align-items:center;gap:8px;font-weight:800;color:var(--ink);text-align:left}
-.stb b{font-size:1.3rem;line-height:1}
-.stb[aria-pressed="true"]{border-color:var(--g1);background:var(--accent-soft)}
 
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
@@ -427,7 +413,7 @@ a.ghost{display:block;text-align:center;text-decoration:none}
       <svg class="ic-luna" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
       <svg class="ic-sol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6l1.4 1.4M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4L6 18M18 6l1.4-1.4"/></svg>
     </button>
-    <div class="brandbox">
+    <div class="brandbox" id="marca">
     <svg class="logo" viewBox="88 104 336 346" aria-hidden="true">
       <path d="M150 262 C150 120 362 120 362 262" fill="none" stroke="#EFA383" stroke-width="24" stroke-linecap="round"/>
       <circle cx="198" cy="252" r="44" fill="#BDE8D4"/>
@@ -450,6 +436,15 @@ a.ghost{display:block;text-align:center;text-decoration:none}
       <h1>Mi Canastita</h1>
       <p id="fecha">Lista de compras</p>
     </div>
+    </div>
+    <div class="seg seg2 hseg" id="subSeg" role="tablist" aria-label="Comidas de la bebé" hidden>
+      <span class="seg-pill" id="subPill" aria-hidden="true"></span>
+      <button type="button" role="tab" data-s="menu" aria-selected="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>Menú
+      </button>
+      <button type="button" role="tab" data-s="recetas" aria-selected="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5zM4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/></svg>Recetas
+      </button>
     </div>
     <button class="iconbtn sync" id="syncBtn" type="button" data-s="none" aria-label="Lista compartida: sincronizar" title="Lista compartida">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18h10a4 4 0 0 0 .6-7.96A6 6 0 0 0 6.2 9.2 4.5 4.5 0 0 0 7 18z"/></svg>
@@ -554,13 +549,6 @@ a.ghost{display:block;text-align:center;text-decoration:none}
 </main>
 
 <main class="wrap" id="vComidas" hidden>
-  <div class="seg seg-top" id="subSeg" role="tablist" aria-label="Comidas de la bebé">
-    <span class="seg-pill" id="subPill" aria-hidden="true"></span>
-    <button type="button" role="tab" data-s="menu" aria-selected="true">Menú</button>
-    <button type="button" role="tab" data-s="recetas" aria-selected="false">Recetas</button>
-    <button type="button" role="tab" data-s="probados" aria-selected="false">Probados</button>
-  </div>
-
   <div class="banner" id="comCargando" hidden>
     <p>Cargando las comidas de tu lista compartida. Si no tienes internet, aparecerán cuando vuelva la conexión.</p>
   </div>
@@ -583,22 +571,6 @@ a.ghost{display:block;text-align:center;text-decoration:none}
     <p class="nota">Recetas de ejemplo para niños de 1 a 2 años, sin sal ni azúcar añadidas. Ante cualquier duda sobre su alimentación, consulta con su pediatra.</p>
   </section>
 
-  <section class="stack-s" id="sProbados" aria-label="Alimentos que ya probó" hidden>
-    <div class="ali-sum glass" id="aliSum"></div>
-    <form class="ali-add" id="aliAdd" autocomplete="off" novalidate>
-      <div class="input-wrap">
-        <span class="preview sm" id="aliPrev" aria-hidden="true">🍽️</span>
-        <label class="sr" for="aliNuevo">Nuevo alimento</label>
-        <input id="aliNuevo" class="plain" maxlength="40" placeholder="Agregar alimento…" enterkeyhint="done">
-      </div>
-      <button type="submit" class="add sq" aria-label="Agregar alimento">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-      </button>
-    </form>
-    <div class="fchips" id="aliFiltros" role="group" aria-label="Filtrar por estado"></div>
-    <div class="stack-s" id="aliLista"></div>
-    <p class="nota">Si notas alguna reacción, márcala con ⚠️ y coméntalo con su pediatra.</p>
-  </section>
 </main>
 </div>
 
@@ -1104,7 +1076,7 @@ a.ghost{display:block;text-align:center;text-decoration:none}
   });
 
   /* ===================== COMIDAS DE LA BEBÉ =====================
-     Recetas, menú y alimentos se guardan como "documentos" que se sincronizan igual que la lista. */
+     Recetas y menú se guardan como "documentos" que se sincronizan igual que la lista. */
   var COMIDAS = [
     { k:"desayuno", n:"Desayuno", e:"🌅", c:"--c-lacteo" },
     { k:"almuerzo", n:"Almuerzo", e:"🍲", c:"--c-fruta" },
@@ -1112,15 +1084,13 @@ a.ghost{display:block;text-align:center;text-decoration:none}
     { k:"cena", n:"Cena", e:"🌙", c:"--c-bebe" }
   ];
   var COMIDA = {}; COMIDAS.forEach(function(c){ COMIDA[c.k] = c; });
-  var GRUPOS_ALI = [["fruta","Frutas"],["verdura","Verduras"],["proteina","Proteínas"],["grano","Granos y cereales"],["lacteo","Lácteos"],["otro","Otros"]];
-  var ESTADOS = { "":{ e:"⚪", t:"Sin probar" }, si:{ e:"👍", t:"Le gustó" }, no:{ e:"😐", t:"No le gustó" }, reaccion:{ e:"⚠️", t:"Tuvo reacción" } };
   var TIEMPOS = [5,10,15,20,25,30,35,40,45,60,90];
   var SVG_IZQ = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>';
   var SVG_DER = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>';
   var SVG_MAS = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>';
   var SVG_LUPA = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>';
 
-  /* ----- Recetas y alimentos de ejemplo (se pueden editar o borrar) ----- */
+  /* ----- Recetas de ejemplo (se pueden editar o borrar) ----- */
   var SEMILLA_RECETAS = [
     { id:"r-avena-platano", icon:"🥣", name:"Avena con plátano", meal:"desayuno", time:10, servings:1,
       ing:[["Avena",0.1,"kg"],["Plátano de seda",1,"u"],["Leche",1,"u"]],
@@ -1204,13 +1174,6 @@ a.ghost{display:block;text-align:center;text-decoration:none}
     ["r-panqueques-platano","r-arroz-lentejas","r-palta-pan","r-sopa-quinua"],
     ["r-quinua-manzana","r-pescado-camote","r-papilla-mango","r-tallarines-brocoli"]
   ];
-  var SEMILLA_ALIMENTOS = [
-    ["Plátano","fruta"],["Manzana","fruta"],["Pera","fruta"],["Papaya","fruta"],["Mango","fruta"],["Palta","fruta"],["Fresa","fruta"],["Mandarina","fruta"],
-    ["Zapallo","verdura"],["Zanahoria","verdura"],["Camote","verdura"],["Papa","verdura"],["Brócoli","verdura"],["Espinaca","verdura"],["Arveja","verdura"],["Choclo","verdura"],
-    ["Pollo","proteina"],["Res","proteina"],["Pescado","proteina"],["Huevo","proteina"],["Hígado de pollo","proteina"],["Lentejas","proteina"],
-    ["Arroz","grano"],["Avena","grano"],["Quinua","grano"],["Fideos","grano"],["Pan","grano"],
-    ["Yogur natural","lacteo"],["Queso fresco","lacteo"],["Leche","lacteo"]
-  ];
 
   /* ----- Fechas ----- */
   function iso(d){ return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
@@ -1241,7 +1204,6 @@ a.ghost{display:block;text-align:center;text-decoration:none}
       semilla("receta", r.id, { name:r.name, icon:r.icon, meal:r.meal, time:r.time, servings:r.servings,
         ingredients:r.ing.map(function(i){ return { name:i[0], qty:i[1], unit:i[2] }; }), steps:r.steps.slice(), notes:r.notes, link:"" });
     });
-    SEMILLA_ALIMENTOS.forEach(function(a){ semilla("alimento", "a-" + norm(a[0]).replace(/ /g, "-"), { name:a[0], group:a[1], status:"", date:"", note:"" }); });
     DIAS_SEMILLA.forEach(function(dia, i){
       var f = sumarDias(hoy, i);
       dia.forEach(function(rid, j){
@@ -1292,7 +1254,7 @@ a.ghost{display:block;text-align:center;text-decoration:none}
   });
 
   /* ----- Pestañas ----- */
-  var VISTA_KEY = "mi-canastita-vista", vista = "compras", sub = "menu", ORDEN_SUB = ["menu","recetas","probados"];
+  var VISTA_KEY = "mi-canastita-vista", vista = "compras", sub = "menu", ORDEN_SUB = ["menu","recetas"];
   try {
     var vg = JSON.parse(localStorage.getItem(VISTA_KEY) || "{}");
     if (vg.vista === "comidas") vista = "comidas";
@@ -1301,6 +1263,9 @@ a.ghost{display:block;text-align:center;text-decoration:none}
   function recordarVista(){ try { localStorage.setItem(VISTA_KEY, JSON.stringify({ vista:vista, sub:sub })); } catch(e) {} }
   function pintarVista(){
     $("vCompras").hidden = vista !== "compras"; $("vComidas").hidden = vista !== "comidas";
+    /* En Comidas el encabezado muestra Menú / Recetas en lugar del título y la fecha */
+    $("marca").hidden = vista === "comidas"; $("subSeg").hidden = vista !== "comidas";
+    document.body.classList.toggle("vista-comidas", vista === "comidas");
     Array.prototype.forEach.call($("tabbar").querySelectorAll(".tab"), function(b){
       if (b.dataset.v === vista) b.setAttribute("aria-current", "page"); else b.removeAttribute("aria-current");
     });
@@ -1310,7 +1275,7 @@ a.ghost{display:block;text-align:center;text-decoration:none}
     var i = ORDEN_SUB.indexOf(sub);
     Array.prototype.forEach.call($("subSeg").querySelectorAll("button"), function(b){ b.setAttribute("aria-selected", String(b.dataset.s === sub)); });
     $("subPill").style.transform = "translateX(" + (i * 100) + "%)";
-    $("sMenu").hidden = sub !== "menu"; $("sRecetas").hidden = sub !== "recetas"; $("sProbados").hidden = sub !== "probados";
+    $("sMenu").hidden = sub !== "menu"; $("sRecetas").hidden = sub !== "recetas";
     renderComidas();
   }
   $("tabbar").addEventListener("click", function(ev){
@@ -1330,7 +1295,7 @@ a.ghost{display:block;text-align:center;text-decoration:none}
   function renderComidas(){
     if (vista !== "comidas") return;
     $("comCargando").hidden = !(state.sync && !state.comidasInit);
-    if (sub === "menu") renderMenu(); else if (sub === "recetas") renderRecetas(); else renderProbados();
+    if (sub === "menu") renderMenu(); else renderRecetas();
   }
 
   /* ===== Menú semanal ===== */
@@ -1582,97 +1547,10 @@ a.ghost{display:block;text-align:center;text-decoration:none}
     });
   }
 
-  /* ===== Alimentos que ya probó ===== */
-  var aliFiltro = "todos";
-  function grupoNombre(g){ var x = GRUPOS_ALI.find(function(y){ return y[0] === g; }); return x ? x[1] : "Otros"; }
-  function renderProbados(){
-    var todos = docsDe("alimento"), probados = todos.filter(function(d){ return d.data.status; }), n = todos.length;
-    var c = { si:0, no:0, reaccion:0 };
-    probados.forEach(function(d){ c[d.data.status] = (c[d.data.status] || 0) + 1; });
-    var pct = n ? Math.round(probados.length / n * 100) : 0;
-    $("aliSum").innerHTML = '<p class="eyebrow">Alimentos probados</p>' +
-      '<div class="ali-top"><span class="big">' + probados.length + ' de ' + n + '</span><strong>' + pct + '%</strong></div>' +
-      '<div class="pbar" aria-hidden="true"><i style="width:' + pct + '%"></i></div>' +
-      '<div class="cnts"><span class="cnt">👍 ' + c.si + '</span><span class="cnt">😐 ' + c.no + '</span><span class="cnt">⚠️ ' + c.reaccion + '</span><span class="cnt">⚪ ' + (n - probados.length) + '</span></div>';
-    $("aliFiltros").innerHTML = [["todos","Todos"],["","Sin probar"],["si","👍 Le gustó"],["no","😐 No le gustó"],["reaccion","⚠️ Reacción"]].map(function(f){
-      return '<button type="button" class="fchip" data-f="' + f[0] + '" aria-pressed="' + (f[0] === aliFiltro) + '">' + f[1] + '</button>';
-    }).join("");
-    var lista = todos.filter(function(d){ return aliFiltro === "todos" || (d.data.status || "") === aliFiltro; }), h = "";
-    GRUPOS_ALI.forEach(function(g){
-      var xs = lista.filter(function(d){ return (d.data.group || "otro") === g[0]; }).sort(function(a, b){ return a.data.name.localeCompare(b.data.name, "es"); });
-      if (!xs.length) return;
-      h += '<div class="stack-s"><h3 class="grp">' + g[1] + ' <span class="count">' + xs.length + '</span></h3><div class="list-gap">' + xs.map(filaAli).join("") + '</div></div>';
-    });
-    $("aliLista").innerHTML = h || '<div class="vacio-s">' + (n ? "No hay alimentos con este filtro." : "Agrega el primer alimento arriba.") + '</div>';
-  }
-  function filaAli(d){
-    var a = d.data, e = iconoDe(a.name), st = ESTADOS[a.status || ""] || ESTADOS[""];
-    var sub = a.status ? st.t + (a.date ? " · " + fmt(a.date, { day:"numeric", month:"short" }) : "") : "Sin probar";
-    if (a.note) sub += " · " + a.note;
-    return '<button type="button" class="arow" data-id="' + esc(d.id) + '"><span class="ic" style="background:var(--c-' + e.cat + ')" aria-hidden="true">' + e.emoji + '</span>' +
-      '<span class="ar-body"><strong>' + esc(a.name) + '</strong><small>' + esc(sub) + '</small></span>' +
-      '<span class="st st-' + (a.status || "x") + '" aria-hidden="true">' + st.e + '</span></button>';
-  }
-  $("aliFiltros").addEventListener("click", function(ev){ var b = ev.target.closest(".fchip"); if (!b) return; aliFiltro = b.dataset.f; renderProbados(); });
-  $("aliLista").addEventListener("click", function(ev){ var b = ev.target.closest(".arow"); if (b) abrirAlimento(b.dataset.id); });
-  function pintarAliPrev(){
-    var e = iconoInfo($("aliNuevo").value) || (function(){ var r = buscar($("aliNuevo").value, true); return r ? r.e : null; })();
-    $("aliPrev").textContent = e ? e.emoji : "🍽️"; $("aliPrev").style.background = "var(--c-" + (e ? e.cat : "otro") + ")";
-  }
-  $("aliNuevo").addEventListener("input", pintarAliPrev);
-  $("aliAdd").addEventListener("submit", function(ev){
-    ev.preventDefault();
-    var t = $("aliNuevo").value.trim().replace(/\s+/g, " ");
-    if (!t){ $("aliNuevo").focus(); return; }
-    var n = norm(t), ex = docsDe("alimento").find(function(d){ return norm(d.data.name) === n; });
-    $("aliNuevo").value = ""; $("aliNuevo").blur(); pintarAliPrev();
-    if (ex){ abrirAlimento(ex.id); return; }
-    var e = iconoDe(t);
-    var g = e.emoji === "🥚" ? "proteina" : ({ fruta:"fruta", verdura:"verdura", carne:"proteina", lacteo:"lacteo", despensa:"grano" }[e.cat] || "otro");
-    ponerDoc("alimento", "a-" + uid(), { name:cap(t), group:g, status:"", date:"", note:"" });
-    aliFiltro = "todos"; cambioComidas(); aviso("Se agregó " + cap(t));
-  });
-  function abrirAlimento(id){
-    var d = buscarDoc(id); if (!d || d.del) return;
-    var a = d.data, st = a.status || "", e = iconoDe(a.name);
-    var html = '<div class="pn-head"><span class="ic xl" style="background:var(--c-' + e.cat + ')" aria-hidden="true">' + e.emoji + '</span>' +
-      '<div><h2>' + esc(a.name) + '</h2><p>' + grupoNombre(a.group) + '</p></div></div>' +
-      '<span class="lbl">¿Cómo le fue?</span><div class="st-grid" id="aliSt">' + ["si","no","reaccion",""].map(function(k){
-        return '<button type="button" class="stb" data-act="st" data-s="' + k + '" aria-pressed="' + (k === st) + '"><b>' + ESTADOS[k].e + '</b><span>' + ESTADOS[k].t + '</span></button>';
-      }).join("") + '</div>' +
-      '<div class="row2"><div><label class="lbl" for="aliFecha">Fecha</label><input id="aliFecha" class="inp" type="date" value="' + esc(a.date || "") + '" max="' + iso(new Date()) + '"></div>' +
-      '<div><label class="lbl" for="aliGrupo">Grupo</label><select id="aliGrupo" class="inp">' + GRUPOS_ALI.map(function(g){
-        return '<option value="' + g[0] + '"' + (g[0] === (a.group || "otro") ? " selected" : "") + '>' + g[1] + '</option>';
-      }).join("") + '</select></div></div>' +
-      '<div><label class="lbl" for="aliNota">Nota</label><textarea id="aliNota" class="inp" maxlength="300" placeholder="Ej. Le gusta más en puré">' + esc(a.note || "") + '</textarea></div>' +
-      '<div><label class="lbl" for="aliNombre">Nombre</label><input id="aliNombre" class="inp" maxlength="40" value="' + esc(a.name) + '"></div>' +
-      '<button type="button" class="add" data-act="guardar"><span>Guardar</span></button>' +
-      '<button type="button" class="ghost danger" data-act="borrar">Borrar alimento</button>' +
-      '<button type="button" class="linkbtn" data-act="cerrar">Cancelar</button>';
-    abrirPanel(html, {
-      st: function(b){
-        st = b.dataset.s;
-        Array.prototype.forEach.call($("aliSt").children, function(x){ x.setAttribute("aria-pressed", String(x === b)); });
-        if (st && !$("aliFecha").value) $("aliFecha").value = iso(new Date());
-      },
-      guardar: function(){
-        var nombre = cap($("aliNombre").value.trim().replace(/\s+/g, " ") || a.name);
-        ponerDoc("alimento", id, { name:nombre, group:$("aliGrupo").value, status:st, date:$("aliFecha").value, note:$("aliNota").value.trim() });
-        cerrarPanel(); cambioComidas();
-        aviso(st ? ESTADOS[st].e + " " + nombre + ": " + ESTADOS[st].t.toLowerCase() : "Se guardó " + nombre);
-      },
-      borrar: function(){
-        var copia = JSON.stringify(d.data); quitarDoc(id); cerrarPanel(); cambioComidas();
-        aviso("Se borró " + a.name, function(){ ponerDoc("alimento", id, JSON.parse(copia)); cambioComidas(); });
-      },
-      cerrar: function(){ cerrarPanel(); }
-    });
-  }
-
   /* Primera vez sin lista compartida: se cargan los ejemplos en este celular */
   if (!state.comidasInit && !state.sync){ sembrar(); state.comidasInit = true; guardar(); }
 
-  /* Sincroniza recetas, menú y alimentos (después de la lista de compras) */
+  /* Sincroniza recetas y menú (después de la lista de compras) */
   function syncDocs(code){
     if (!state.sync || state.sync.code !== code) return Promise.resolve(false);
     var sucios = state.docs.filter(function(d){ return d.dirty; });
@@ -1700,7 +1578,7 @@ a.ghost{display:block;text-align:center;text-decoration:none}
       if (!state.comidasInit){
         state.comidasInit = true; hubo = true;
         /* Nadie de la lista compartida tenía comidas todavía: se cargan los ejemplos una sola vez */
-        if (!(filas || []).length && !docsDe("receta").length && !docsDe("alimento").length){ sembrar(); programarSync(); }
+        if (!(filas || []).length && !docsDe("receta").length){ sembrar(); programarSync(); }
       }
       if (hubo){ guardar(); renderComidas(); }
       return true;
